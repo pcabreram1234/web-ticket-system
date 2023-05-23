@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.PhoneInputInput {
+  border-color: transparent !important;
+  outline: none;
+}
+ 
+#mapcontainer {
+  height: 160px;
+ /* position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 75vw;
+  left: 25%;
+  height: 100vh;
+  */
+}

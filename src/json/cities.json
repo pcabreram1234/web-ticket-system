@@ -1,0 +1,181 @@
+{
+  "Cities": {
+    "Azua": {
+      "cities": [
+        "Azua de Compostela",
+        "Las Charcas",
+        "Estebanía",
+        "Guayabal",
+        "Padre Las Casas"
+      ]
+    },
+    "Baoruco": {
+      "cities": ["Neiba", "Galván", "Los Ríos", "Tamayo", "Uvilla"]
+    },
+    "Barahona": {
+      "cities": ["Barahona", "Cabral", "El Peñón", "Enriquillo", "Fundación"]
+    },
+    "Dajabón": {
+      "cities": [
+        "Dajabón",
+        "El Pino",
+        "Loma de Cabrera",
+        "Partido",
+        "Restauración"
+      ]
+    },
+    "Distrito Nacional": {
+      "cities": ["Santo Domingo"]
+    },
+    "Duarte": {
+      "cities": [
+        "San Francisco de Macorís",
+        "Altamira",
+        "Castillo",
+        "Las Guáranas",
+        "Villa Riva"
+      ]
+    },
+    "Elías Piña": {
+      "cities": [
+        "Comendador",
+        "Bánica",
+        "El Llano",
+        "Hondo Valle",
+        "Pedro Santana"
+      ]
+    },
+    "El Seibo": {
+      "cities": ["Santa Cruz del Seibo", "Miches", "Pedro Sánchez"]
+    },
+    "Espaillat": {
+      "cities": [
+        "Moca",
+        "Cayetano Germosén",
+        "Gaspar Hernández",
+        "Jamao al Norte"
+      ]
+    },
+    "Hato Mayor": {
+      "cities": ["Hato Mayor del Rey", "El Valle", "Sabana de la Mar"]
+    },
+    "Hermanas Mirabal": {
+      "cities": ["Salcedo", "Tenares", "Villa Tapia"]
+    },
+    "Independencia": {
+      "cities": ["Jimaní", "Cristóbal", "Duvergé"]
+    },
+    "La Altagracia": {
+      "cities": ["Higüey", "Bávaro", "Bayahibe", "La Romana"]
+    },
+    "La Romana": {
+      "cities": ["La Romana", "Guaymate", "Villa Hermosa"]
+    },
+    "La Vega": {
+      "cities": [
+        "Concepción de La Vega",
+        "Jarabacoa",
+        "Constanza",
+        "Jima Abajo"
+      ]
+    },
+    "María Trinidad Sánchez": {
+      "cities": ["Nagua", "Cabrera", "El Factor"]
+    },
+    "Monseñor Nouel": {
+      "cities": ["Bonao", "Maimón"]
+    },
+    "Monte Cristi": {
+      "cities": [
+        "Monte Cristi",
+        "Castañuela",
+        "Guayubín",
+        "Las Matas de Santa Cruz",
+        "Pepillo Salcedo"
+      ]
+    },
+    "Monte Plata": {
+      "cities": [
+        "Monte Plata",
+        "Bayaguana",
+        "Peralvillo",
+        "Sabana Grande de Boyá",
+        "Yamasá"
+      ]
+    },
+    "Pedernales": {
+      "cities": ["Pedernales", "Oviedo", "Postrer Río"]
+    },
+    "Peravia": {
+      "cities": ["Baní", "Nizao", "Sabana Buey", "Villa Fundación"]
+    },
+    "Puerto Plata": {
+      "cities": [
+        "San Felipe de Puerto Plata",
+        "Altamira",
+        "Guananico",
+        "Luperón",
+        "Sosúa"
+      ]
+    },
+    "Samaná": {
+      "cities": ["Santa Bárbara de Samaná", "Las Terrenas", "Sánchez"]
+    },
+    "San Cristóbal": {
+      "cities": [
+        "San Cristóbal",
+        "Bajos de Haina",
+        "Cambita Garabitos",
+        "Los Cacaos",
+        "Yaguate"
+      ]
+    },
+    "San José de Ocoa": {
+      "cities": ["San José de Ocoa", "Rancho Arriba", "Sabana Larga"]
+    },
+    "San Juan": {
+      "cities": [
+        "San Juan de la Maguana",
+        "Bohechío",
+        "El Cercado",
+        "Las Matas de Farfán"
+      ]
+    },
+    "San Pedro de Macorís": {
+      "cities": [
+        "San Pedro de Macorís",
+        "Guayacanes",
+        "Los Llanos",
+        "Quisqueya",
+        "Ramón Santana"
+      ]
+    },
+    "Santiago": {
+      "cities": [
+        "Santiago de los Caballeros",
+        "Bisonó",
+        "Jánico",
+        "Licey al Medio",
+        "Puñal"
+      ]
+    },
+    "Santiago Rodríguez": {
+      "cities": [
+        "San Ignacio de Sabaneta",
+        "Los Almácigos",
+        "Monción",
+        "Villa Los Almácigos"
+      ]
+    },
+    "Santo Domingo": {
+      "cities": [
+        "Santo Domingo Este",
+        "Santo Domingo Norte",
+        "Santo Domingo Oeste"
+      ]
+    },
+    "Valverde": {
+      "cities": ["Mao", "Esperanza", "Laguna Salada"]
+    }
+  }
+}
