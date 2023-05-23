@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Menu } from "antd";
 import { useTranslation } from "react-i18next";
 import {
@@ -8,12 +8,13 @@ import {
   FaMapMarkerAlt,
   FaUserAlt,
 } from "react-icons/fa";
+import { AiOutlineLogout } from "react-icons/ai";
 import { useHookstate } from "@hookstate/core";
 import { userInfo } from "../context";
 
 const LeftNavBar = () => {
   const { t } = useTranslation();
-  const userState = useHookstate(userInfo);
+  const [user, setUser] = useState(useHookstate(userInfo).get().data);
   const items = [
     {
       label: t("Home-Menu-option"),
@@ -40,9 +41,14 @@ const LeftNavBar = () => {
       icon: <FaMapMarkerAlt />,
     },
     {
-      label: userState.get().data,
+      label: user.toString(),
       key: "User-Name-Menu",
       icon: <FaUserAlt />,
+    },
+    {
+      label: t("Log-Out-Menu-option"),
+      key: "Log-Out-Menu-option",
+      icon: <AiOutlineLogout />,
     },
   ];
   return (
