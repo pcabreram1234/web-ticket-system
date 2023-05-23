@@ -6,15 +6,10 @@ import {
   FaCalendar,
   FaCalendarCheck,
   FaMapMarkerAlt,
-  FaUserAlt,
 } from "react-icons/fa";
-import { AiOutlineLogout } from "react-icons/ai";
-import { useHookstate } from "@hookstate/core";
-import { userInfo } from "../context";
-
-const LeftNavBar = () => {
+import { AiOutlineLogin } from "react-icons/ai";
+const LogInNavBar = () => {
   const { t } = useTranslation();
-  const [user, setUser] = useState(useHookstate(userInfo).get().data);
   const items = [
     {
       label: t("Home-Menu-option"),
@@ -40,15 +35,11 @@ const LeftNavBar = () => {
       key: "Use-Location-Menu-option",
       icon: <FaMapMarkerAlt />,
     },
+
     {
-      label: user.toString(),
-      key: "User-Name-Menu",
-      icon: <FaUserAlt />,
-    },
-    {
-      label: t("Log-Out-Menu-option"),
-      key: "Log-Out-Menu-option",
-      icon: <AiOutlineLogout />,
+      label: t("Log-In-Menu-option"),
+      key: "Log-In-Menu-option",
+      icon: <AiOutlineLogin />,
     },
   ];
   return (
@@ -56,4 +47,4 @@ const LeftNavBar = () => {
   );
 };
 
-export default LeftNavBar;
+export default LogInNavBar;

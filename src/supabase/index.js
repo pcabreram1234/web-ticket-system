@@ -66,5 +66,4 @@ export async function searchUser(email) {
 
 export async function logOut() {
   const res = await supabase.auth.signOut();
-  console.log(res);
 }

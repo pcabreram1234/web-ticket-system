@@ -3,7 +3,9 @@ import { Layout, Typography } from "antd";
 const { Header } = Layout;
 const { Title } = Typography;
 import { useTranslation } from "react-i18next";
-import LoginForm from "../components/form/LoginForm";
+import { Routes, Route } from "react-router-dom"; 
+import OwnerApp from "../pages/owner/OwnerApp";
+
 const Home = () => {
   const { t } = useTranslation();
 
@@ -18,6 +20,9 @@ const Home = () => {
       <Header style={{ backgroundColor: "transparent" }}>
         <Title style={{ textAlign: "center" }}>{t("Home-Title")}</Title>
       </Header>
+      <Routes>
+        <Route path="/My-Companies" element={<OwnerApp />} />
+      </Routes>
     </Layout>
   );
 };
