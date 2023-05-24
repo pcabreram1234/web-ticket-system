@@ -19,26 +19,26 @@ const LogOutNavBar = () => {
   const items = [
     {
       label: t("Home-Menu-option"),
-      key: "Home-Menu-option",
+      key: "/",
       icon: <FaHome />,
     },
     {
       label: t("Offers-Menu-option"),
-      key: "Offers-Menu-option",
+      key: "/offers",
     },
     {
       label: t("Schedule-Menu-option"),
-      key: "Schedule-Menu-option",
+      key: "/schedule",
       icon: <FaCalendar />,
     },
     {
       label: t("Reservation-Menu-option"),
-      key: "Reservation-Menu-option",
+      key: "/reservation",
       icon: <FaCalendarCheck />,
     },
     {
       label: t("Use-Location-Menu-option"),
-      key: "Use-Location-Menu-option",
+      key: "/useLocation",
       icon: <FaMapMarkerAlt />,
     },
     {
