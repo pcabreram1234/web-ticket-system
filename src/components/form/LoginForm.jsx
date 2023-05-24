@@ -6,6 +6,7 @@ import { userInfo } from "../../context";
 import { useHookstate } from "@hookstate/core";
 import { businessInfo } from "../../context";
 import { checkInternetConnection } from "../../utils/internet";
+import { useNavBarNavigation } from "../../hooks/useNavigateNavBar";
 import FooterCopyRight from "../../Layouts/FooterCopyRight";
 
 const { Header, Footer, Content } = Layout;
@@ -16,6 +17,7 @@ const LoginForm = () => {
   const { t } = useTranslation();
   const userState = useHookstate(userInfo);
   const businessState = useHookstate(businessInfo);
+  const navigate = useNavBarNavigation();
   const handleSubmit = () => {
     form.validateFields().then(() => {
       const internetConnection = checkInternetConnection();
@@ -25,6 +27,7 @@ const LoginForm = () => {
         const signIn = signInWithEmail(email, password).then((resp) => {
           userState.data.set(resp.user);
           businessState.user_id.set(resp.user.id);
+          navigate("/");
         });
       }
     });

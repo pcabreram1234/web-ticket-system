@@ -51,7 +51,7 @@ export async function signInWithEmail(email, password) {
     openNotification(i18n.t("error-signin"), error.message, "error");
   }
   if (data.user !== null) {
-    openNotification("wellcome", i18n.t("wellcome-description"), "su  ccess");
+    openNotification("wellcome", i18n.t("wellcome-description"), "success");
     return data;
   }
 }
