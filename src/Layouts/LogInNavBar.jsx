@@ -45,7 +45,7 @@ const LogInNavBar = () => {
 
     {
       label: t("Log-In-Menu-option"),
-      key: "/Login",
+      key: "/login",
       icon: <AiOutlineLogin />,
     },
   ];

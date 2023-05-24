@@ -65,5 +65,7 @@ export async function searchUser(email) {
 }
 
 export async function logOut() {
-  const res = await supabase.auth.signOut();
+  const res = await supabase.auth.signOut().then(() => {
+    openNotification("Good Bye", i18n.t("good-bye-description"), "info");
+  });
 }

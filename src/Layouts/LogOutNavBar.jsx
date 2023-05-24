@@ -12,10 +12,23 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { userInfo } from "../context";
 import { useHookstate } from "@hookstate/core";
 import { logOut } from "../supabase";
+import { useNavBarNavigation } from "../hooks/useNavigateNavBar";
 
 const LogOutNavBar = () => {
   const { t } = useTranslation();
   const userName = useHookstate(userInfo);
+  const navigate = useNavBarNavigation();
+
+  const handleClick = (e) => {
+    if (e.key === "Log-Out-Menu-option") {
+      logOut().then((resp) => {
+        userName.data.set(undefined);
+        navigate("/login");
+      });
+    }
+    navigate(e.key);
+  };
+
   const items = [
     {
       label: t("Home-Menu-option"),
@@ -54,19 +67,12 @@ const LogOutNavBar = () => {
     },
   ];
 
-  const handleLogOutClick = (e) => {
-    if (e.key === "Log-Out-Menu-option") {
-      logOut().then((resp) => {
-        userName.data.set(undefined);
-      });
-    }
-  };
   return (
     <Menu
       items={items}
       mode="horizontal"
       style={{ width: "100%" }}
-      onClick={handleLogOutClick}
+      onClick={handleClick}
     ></Menu>
   );
 };

@@ -64,5 +64,7 @@
   "Reservation-Menu-option": "Reservar",
   "Use-Location-Menu-option": "Usar ubicación",
   "Log-Out-Menu-option": "Cerrar sesión",
-  "Log-In-Menu-option": "Iniciar sesión"
+  "Log-In-Menu-option": "Iniciar sesión",
+  "Good Bye": "Adios",
+  "good-bye-description": "Esperamos volver a saber de ti"
 }
