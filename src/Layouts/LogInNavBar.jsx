@@ -14,7 +14,9 @@ const LogInNavBar = () => {
   const navigate = useNavBarNavigation();
 
   const handleClick = (e) => {
-    navigate(e.key);
+    if (e.key !== "User-Name-Menu") {
+      navigate(e.key);
+    }
   };
 
   const items = [

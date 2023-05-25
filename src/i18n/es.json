@@ -66,5 +66,6 @@
   "Log-Out-Menu-option": "Cerrar sesión",
   "Log-In-Menu-option": "Iniciar sesión",
   "Good Bye": "Adios",
-  "good-bye-description": "Esperamos volver a saber de ti"
+  "good-bye-description": "Esperamos volver a saber de ti",
+  "My-config":"Mis configuraciones"
 }

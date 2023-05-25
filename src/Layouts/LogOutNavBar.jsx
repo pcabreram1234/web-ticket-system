@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Menu } from "antd";
 import { useTranslation } from "react-i18next";
 import {
@@ -20,13 +20,37 @@ const LogOutNavBar = () => {
   const navigate = useNavBarNavigation();
 
   const handleClick = (e) => {
-    if (e.key === "Log-Out-Menu-option") {
-      logOut().then((resp) => {
-        userName.data.set(undefined);
-        navigate("/login");
-      });
+    if (e.key !== "User-Name-Menu") {
+      if (e.key === "Log-Out-Menu-option") {
+        logOut().then((resp) => {
+          userName.data.set(undefined);
+          navigate("/login");
+        });
+      }
+      navigate(e.key);
     }
-    navigate(e.key);
+  };
+
+  const toogleLogInLogOut = (user) => {
+    if (user !== undefined) {
+      const { name, user_type } = user.user_metadata;
+      switch (user_type) {
+        case "business_owner":
+          console.log("Dueño de comercio");
+          items.push({
+          
+          })
+          break;
+
+        case "customer":
+          console.log("Normal")
+          break;
+
+        default:
+          console.log("usuario normal");
+          break;
+      }
+    }
   };
 
   const items = [
@@ -66,6 +90,10 @@ const LogOutNavBar = () => {
       danger: true,
     },
   ];
+
+  useEffect(() => {
+    toogleLogInLogOut(userName.get().data);
+  }, [userInfo, handleClick]);
 
   return (
     <Menu

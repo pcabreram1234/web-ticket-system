@@ -21,7 +21,7 @@ const Home = () => {
         <Title style={{ textAlign: "center" }}>{t("Home-Title")}</Title>
       </Header>
       <Routes>
-        <Route path="/My-Companies" element={<OwnerApp />} />
+        <Route path="/My-config" element={<OwnerApp />} />
       </Routes>
     </Layout>
   );
