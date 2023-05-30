@@ -17,46 +17,8 @@ import { useNavBarNavigation } from "../hooks/useNavigateNavBar";
 
 const NavBar = () => {
   const { t } = useTranslation();
-  const [itemsForMenu, setMenuItmes] = useState([]);
   const userName = useHookstate(userInfo);
   const [email, setEmail] = useState("");
-  const navigate = useNavBarNavigation();
-
-  const handleClick = (e) => {
-    toogleLogInLogOut(userName.get().data);
-    if (e.key !== "User-Name-Menu") {
-      if (e.key === "Log-Out-Menu-option") {
-        logOut().then((resp) => {
-          userName.data.set(undefined);
-          toogleLogInLogOut(undefined);
-          navigate("/login");
-        });
-      }
-      navigate(e.key);
-    }
-  };
-
-  const toogleLogInLogOut = (user) => {
-    if (user !== undefined) {
-      const { user_type } = user.user_metadata;
-      switch (user_type) {
-        case "business_owner":
-          console.log("Dueño de comercio");
-          setMenuItmes(menuItems.menu_for_bussiness_owner_logged_user);
-          break;
-
-        case "customer":
-          console.log(user_type);
-          setMenuItmes(menuItems.menu_for_normal_logged_user);
-          break;
-      }
-      setEmail(user.email);
-    } else {
-      setMenuItmes(menuItems.menu_for_unlogged_user);
-      setEmail("");
-    }
-  };
-
   const menuItems = {
     menu_for_normal_logged_user: [
       {
@@ -84,7 +46,7 @@ const NavBar = () => {
         icon: <FaMapMarkerAlt />,
       },
       {
-        label: email,
+        label: userName.get().data.email || "",
         key: "User-Name-Menu",
         icon: <FaUserAlt />,
       },
@@ -121,7 +83,7 @@ const NavBar = () => {
         icon: <FaMapMarkerAlt />,
       },
       {
-        label: email,
+        label: userName.get().data.email || "",
         key: "User-Name-Menu",
         icon: <FaUserAlt />,
       },
@@ -170,10 +132,55 @@ const NavBar = () => {
       },
     ],
   };
+  const [itemsForMenu, setMenuItmes] = useState(
+    menuItems.menu_for_unlogged_user
+  );
+
+  const navigate = useNavBarNavigation();
+
+  const handleClick = (e) => {
+    if (e.key !== "User-Name-Menu") {
+      if (e.key === "Log-Out-Menu-option") {
+        logOut().then((resp) => {
+          userName.data.set(undefined);
+          setMenuItmes(menuItems.menu_for_unlogged_user);
+          // setEmail("");
+          navigate("/login");
+        });
+      }
+      navigate(e.key);
+    }
+  };
+
+  const handleUserTypeMenu = () => {
+    if (userName.get().data !== undefined) {
+      const { user_type } = userName.get().data.user_metadata;
+      switch (user_type) {
+        case "business_owner":
+          if (itemsForMenu !== menuItems.menu_for_bussiness_owner_logged_user) {
+            setMenuItmes(menuItems.menu_for_bussiness_owner_logged_user);
+          }
+          break;
+
+        case "customer":
+          if (itemsForMenu !== menuItems.menu_for_normal_logged_user) {
+            setMenuItmes(menuItems.menu_for_normal_logged_user);
+          }
+          break;
+      }
+      // setEmail(userName.get().data.email);
+    } else {
+      setMenuItmes(menuItems.menu_for_unlogged_user);
+    }
+  };
 
   useEffect(() => {
-    toogleLogInLogOut(userName.get().data);
+    handleUserTypeMenu();
   }, []);
+
+  useEffect(() => {
+    handleUserTypeMenu();
+  }, [userName.data]);
 
   return (
     <Menu

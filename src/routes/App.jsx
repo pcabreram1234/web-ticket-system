@@ -6,6 +6,7 @@ import LoginForm from "../components/form/LoginForm";
 import { userInfo } from "../context";
 import NavBar from "../Layouts/NavBar";
 import UserContext from "../context/UserContext";
+import OwnerApp from "../pages/owner/OwnerApp";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/My-config" element={<OwnerApp />} />
       </Routes>
     </UserContext.Provider>
   );
