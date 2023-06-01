@@ -18,7 +18,7 @@ import { useNavBarNavigation } from "../hooks/useNavigateNavBar";
 const NavBar = () => {
   const { t } = useTranslation();
   const userName = useHookstate(userInfo);
-  const [email, setEmail] = useState("");
+  const [userEmail, setUserEmail] = useState(userInfo.get().data);
   const menuItems = {
     menu_for_normal_logged_user: [
       {
@@ -46,7 +46,7 @@ const NavBar = () => {
         icon: <FaMapMarkerAlt />,
       },
       {
-        label: userName.get().data.email || "",
+        label: userEmail !== undefined ? userEmail.email : "",
         key: "User-Name-Menu",
         icon: <FaUserAlt />,
       },
@@ -83,7 +83,7 @@ const NavBar = () => {
         icon: <FaMapMarkerAlt />,
       },
       {
-        label: userName.get().data.email || "",
+        label: userEmail !== undefined ? userEmail.email : "",
         key: "User-Name-Menu",
         icon: <FaUserAlt />,
       },
