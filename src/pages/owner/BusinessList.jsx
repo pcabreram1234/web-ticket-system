@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { EditFilled, DeleteFilled } from "@ant-design/icons";
 
 const BusinessList = () => {
-  const userId = useHookstate(userInfo).get({ noproxy: true }).data.sub;
+  const userId = useHookstate(userInfo).get().data.id;
   const [business, setBusiness] = useState([]);
   const { t } = useTranslation();
   const { Text } = Typography;
@@ -24,13 +24,12 @@ const BusinessList = () => {
   }, []);
 
   return (
-    <div>
-      {business !== null &&
-        business.length > 0 &&
-        business.map((company) => {
-          return (
-            <Space direction="vertical" size={20} key={company.id}>
-              <Card title={company.name} style={{ width: "300px" }}>
+      <Space direction="vertical" size={"middle"} style={{display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(200px, 1fr))"}}>
+        {business !== null &&
+          business.length > 0 &&
+          business.map((company) => {
+            return (
+              <Card key={company.id} title={company.name} style={{ width: "300px" }}>
                 <div className="company_card_img_container">
                   <Image src={company.logo} width={100} />
                   <Text>
@@ -47,10 +46,9 @@ const BusinessList = () => {
                   </Button>
                 </div>
               </Card>
-            </Space>
-          );
-        })}
-    </div>
+            );
+          })}
+      </Space>
   );
 };
 

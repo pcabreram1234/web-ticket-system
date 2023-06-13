@@ -1,22 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Form, Input, Button, Layout, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { signInWithEmail } from "../../supabase";
-import { userInfo } from "../../context";
-import { useHookstate } from "@hookstate/core";
-import { businessInfo } from "../../context";
 import { checkInternetConnection } from "../../utils/internet";
 import { useNavBarNavigation } from "../../hooks/useNavigateNavBar";
 import FooterCopyRight from "../../Layouts/FooterCopyRight";
+import { AuthContext } from "../../context/UserContext";
 
 const { Header, Footer, Content } = Layout;
 const { Title } = Typography;
 
 const LoginForm = () => {
+  const { user } = useContext(AuthContext);
   const [form] = Form.useForm();
   const { t } = useTranslation();
-  const userState = useHookstate(userInfo);
-  const businessState = useHookstate(businessInfo);
   const navigate = useNavBarNavigation();
   const handleSubmit = () => {
     form.validateFields().then(() => {
@@ -25,9 +22,9 @@ const LoginForm = () => {
         const email = form.getFieldValue("email");
         const password = form.getFieldValue("password");
         const signIn = signInWithEmail(email, password).then((resp) => {
-          userState.data.set(resp.user);
-          businessState.user_id.set(resp.user.id);
           navigate("/");
+          setUser(resp);
+          console.log(user);
         });
       }
     });
@@ -60,13 +57,7 @@ const LoginForm = () => {
           </Form.Item>
 
           <Form.Item style={{ textAlign: "center" }}>
-            <Button
-              type="primary"
-              htmlType="submit"
-              onClick={() => {
-                handleSubmit();
-              }}
-            >
+            <Button type="primary" htmlType="submit" onClick={handleSubmit}>
               {t("Login-form-LogIngButton")}
             </Button>
           </Form.Item>

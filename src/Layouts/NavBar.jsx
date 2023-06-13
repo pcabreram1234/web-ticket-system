@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Menu } from "antd";
 import { useTranslation } from "react-i18next";
 import {
@@ -10,15 +10,13 @@ import {
   FaCog,
 } from "react-icons/fa";
 import { AiOutlineLogout, AiOutlineLogin } from "react-icons/ai";
-import { userInfo } from "../context";
-import { useHookstate } from "@hookstate/core";
 import { logOut } from "../supabase";
 import { useNavBarNavigation } from "../hooks/useNavigateNavBar";
+import { AuthContext } from "../context/UserContext";
 
 const NavBar = () => {
   const { t } = useTranslation();
-  const userName = useHookstate(userInfo);
-  const [userEmail, setUserEmail] = useState(userInfo.get().data);
+  const { user, setUser } = useContext(AuthContext);
   const menuItems = {
     menu_for_normal_logged_user: [
       {
@@ -46,7 +44,7 @@ const NavBar = () => {
         icon: <FaMapMarkerAlt />,
       },
       {
-        label: userEmail !== undefined ? userEmail.email : "",
+        label: user !== null ? user.email : "",
         key: "User-Name-Menu",
         icon: <FaUserAlt />,
       },
@@ -83,7 +81,7 @@ const NavBar = () => {
         icon: <FaMapMarkerAlt />,
       },
       {
-        label: userEmail !== undefined ? userEmail.email : "",
+        label: user !== null ? user.email : "",
         key: "User-Name-Menu",
         icon: <FaUserAlt />,
       },
@@ -139,12 +137,11 @@ const NavBar = () => {
   const navigate = useNavBarNavigation();
 
   const handleClick = (e) => {
+    setMenuItmes(handleUserTypeMenu());
     if (e.key !== "User-Name-Menu") {
       if (e.key === "Log-Out-Menu-option") {
         logOut().then((resp) => {
-          userName.data.set(undefined);
-          setMenuItmes(menuItems.menu_for_unlogged_user);
-          // setEmail("");
+          setUser(null);
           navigate("/login");
         });
       }
@@ -153,34 +150,28 @@ const NavBar = () => {
   };
 
   const handleUserTypeMenu = () => {
-    if (userName.get().data !== undefined) {
-      const { user_type } = userName.get().data.user_metadata;
+    if (user !== null) {
+      const user_type = user.user.user_metadata.user_type;
       switch (user_type) {
         case "business_owner":
           if (itemsForMenu !== menuItems.menu_for_bussiness_owner_logged_user) {
-            setMenuItmes(menuItems.menu_for_bussiness_owner_logged_user);
+            return menuItems.menu_for_bussiness_owner_logged_user;
           }
           break;
-
         case "customer":
           if (itemsForMenu !== menuItems.menu_for_normal_logged_user) {
-            setMenuItmes(menuItems.menu_for_normal_logged_user);
+            return menuItems.menu_for_normal_logged_user;
           }
           break;
       }
-      // setEmail(userName.get().data.email);
     } else {
-      setMenuItmes(menuItems.menu_for_unlogged_user);
+      return menuItems.menu_for_unlogged_user;
     }
   };
 
   useEffect(() => {
-    handleUserTypeMenu();
+    setMenuItmes(handleUserTypeMenu());
   }, []);
-
-  useEffect(() => {
-    handleUserTypeMenu();
-  }, [userName.data]);
 
   return (
     <Menu

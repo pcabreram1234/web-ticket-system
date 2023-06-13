@@ -49,10 +49,11 @@ export async function signInWithEmail(email, password) {
 
   if (error) {
     openNotification(i18n.t("error-signin"), error.message, "error");
+    return error;
   }
   if (data.user !== null) {
     openNotification("wellcome", i18n.t("wellcome-description"), "success");
-    return data;
+    return data.user;
   }
 }
 

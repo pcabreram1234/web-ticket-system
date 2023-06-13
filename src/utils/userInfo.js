@@ -1,13 +1,10 @@
-import * as jose from "jose";
+import * as jwt from "jose";
 
 const handleUserInfo = () => {
   const token = JSON.parse(
     window.localStorage.getItem("sb-tdvztulgsohoonxfcpwt-auth-token")
   );
-  if (token) {
-    const claims = jose.decodeJwt(token.access_token);
-    return claims;
-  }
+  return token !== null ? token : null;
 };
 
 export { handleUserInfo };

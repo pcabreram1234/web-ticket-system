@@ -1,12 +1,11 @@
 import { hookstate } from "@hookstate/core";
-import { handleUserInfo } from "../utils/userInfo";
 import { handleInternetConnection } from "../utils/internet";
 
 const userInfo = hookstate({
   signUpText: "",
-  data: handleUserInfo(),
   online: handleInternetConnection(),
   signUpAlertType: "",
+  user: "",
 });
 
 const businessInfo = hookstate({
