@@ -7,10 +7,14 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const handleUserInfo = () => {
-    const session = supabase.auth.getSession().then((resp) => {
-      console.log(resp);
-      setUser(resp?.data?.session?.user ?? null);
-    });
+    const session = supabase.auth
+      .getSession()
+      .then((resp) => {
+        setUser(resp?.data?.session?.user ?? null);
+      })
+      .catch((error) => {
+        console.error(error + "error");
+      });
   };
 
   useEffect(() => {

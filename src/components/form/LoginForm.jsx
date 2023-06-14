@@ -11,7 +11,7 @@ const { Header, Footer, Content } = Layout;
 const { Title } = Typography;
 
 const LoginForm = () => {
-  const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
   const [form] = Form.useForm();
   const { t } = useTranslation();
   const navigate = useNavBarNavigation();
@@ -24,7 +24,6 @@ const LoginForm = () => {
         const signIn = signInWithEmail(email, password).then((resp) => {
           navigate("/");
           setUser(resp);
-          console.log(user);
         });
       }
     });

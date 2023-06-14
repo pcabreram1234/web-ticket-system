@@ -151,7 +151,8 @@ const NavBar = () => {
 
   const handleUserTypeMenu = () => {
     if (user !== null) {
-      const user_type = user.user.user_metadata.user_type;
+      const user_type = user.user_metadata.user_type;
+      console.log(user_type);
       switch (user_type) {
         case "business_owner":
           if (itemsForMenu !== menuItems.menu_for_bussiness_owner_logged_user) {
@@ -171,7 +172,7 @@ const NavBar = () => {
 
   useEffect(() => {
     setMenuItmes(handleUserTypeMenu());
-  }, []);
+  }, [user]);
 
   return (
     <Menu
@@ -179,7 +180,7 @@ const NavBar = () => {
       mode="horizontal"
       style={{ width: "100%" }}
       onClick={handleClick}
-    ></Menu>
+    />
   );
 };
 
