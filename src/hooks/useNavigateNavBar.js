@@ -1,10 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
-import { userInfo } from "../context";
-import { useHookstate } from "@hookstate/core";
+import { AuthContext } from "../context/UserContext";
 const useNavBarNavigation = (path) => {
   const navigate = useNavigate();
-  const userState = useHookstate(userInfo).get().data;
+  const userState = useContext(AuthContext);
   useEffect(() => {
     if (userState !== undefined) {
       if (path === "/login") {

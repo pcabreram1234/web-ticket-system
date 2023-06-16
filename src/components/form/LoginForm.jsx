@@ -11,7 +11,7 @@ const { Header, Footer, Content } = Layout;
 const { Title } = Typography;
 
 const LoginForm = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { setUser } = useContext(AuthContext);
   const [form] = Form.useForm();
   const { t } = useTranslation();
   const navigate = useNavBarNavigation();
