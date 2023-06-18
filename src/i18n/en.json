@@ -68,5 +68,7 @@
   "Log-In-Menu-option": "Log In",
   "Good Bye": "Good Bye",
   "good-bye-description": "We hope see you soon",
-  "My-config": "Config"
+  "My-config": "Config",
+  "OwnerApp-Services-types": "Business type",
+  "search-placeholder": "type your search"
 }

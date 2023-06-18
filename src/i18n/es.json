@@ -67,5 +67,7 @@
   "Log-In-Menu-option": "Iniciar sesión",
   "Good Bye": "Adios",
   "good-bye-description": "Esperamos volver a saber de ti",
-  "My-config":"Mis configuraciones"
+  "My-config": "Mis configuraciones",
+  "OwnerApp-Services-types": "Clase de comercio",
+  "search-placeholder": "Buscar..."
 }

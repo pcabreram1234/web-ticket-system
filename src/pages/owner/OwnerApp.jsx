@@ -55,7 +55,7 @@ const OwnerApp = () => {
         }}
       >
         <Sider
-          width={"20%"}
+          width={300}
           style={{
             backgroundColor: "transparent",
             padding: "25px 10px",
@@ -99,7 +99,9 @@ const OwnerApp = () => {
             {t("OwnerApp-close-session")}
           </Button>
         </Sider>
-        <Content>
+        <Content
+          style={{ display: "grid", width: "100%", placeItems: "center" }}
+        >
           {showAddBusiness && <AddCompaniesForm />}
           {showBusinessSaved && <BusinessList />}
         </Content>
