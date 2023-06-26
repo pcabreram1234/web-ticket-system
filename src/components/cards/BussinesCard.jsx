@@ -7,13 +7,9 @@ const BusinessCard = ({ company }) => {
   const { t } = useTranslation();
   const { Text } = Typography;
   return (
-    <Card
-      key={company.id}
-      title={company.name}
-      style={{ width: "300px", margin: "0 40px" }}
-    >
+    <Card key={company.id} title={company.name} style={{ width: "300px", margin:"10px 0" }}>
       <div className="company_card_img_container">
-        <Image src={company.logo} width={100} />
+        <Image src={company.logo} width={60} />
         <Text>
           {t("OwnerApp-Services-types")}: {t(company.service_type.toString())}
         </Text>

@@ -55,10 +55,9 @@ const OwnerApp = () => {
         }}
       >
         <Sider
-          width={300}
           style={{
             backgroundColor: "transparent",
-            padding: "25px 10px",
+            margin: "25px 10px",
           }}
         >
           <Button
@@ -100,7 +99,8 @@ const OwnerApp = () => {
           </Button>
         </Sider>
         <Content
-          style={{ display: "grid", width: "100%", placeItems: "center" }}
+          // style={{ display: "grid", width: "100%", placeItems: "center" }}
+          style={{ textAlign: "center" }}
         >
           {showAddBusiness && <AddCompaniesForm />}
           {showBusinessSaved && <BusinessList />}
