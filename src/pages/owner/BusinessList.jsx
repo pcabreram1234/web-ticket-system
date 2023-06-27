@@ -10,35 +10,53 @@ const BusinessList = () => {
   const userId = user?.user?.id ?? null;
   const { Content } = Layout;
 
-  console.log(user);
   const [business, setBusiness] = useState([]);
-  const [filterValue, setFilterValue] = useState([]);
+  const [autoCompleteOptions, setAutoCompleteOptions] = useState([]);
+  const [filteredBusiness, setFilteredBusiness] = useState([]);
+
   useEffect(() => {
     fetchAllCompaniesByUser(userId)
       .then((companies) => {
         setBusiness(companies);
-        setFilterValue(companies);
+        setFilteredBusiness(companies);
+        setAutoCompleteOptions(
+          companies.map((c) => {
+            return { value: c.name };
+          })
+        );
       })
       .catch((err) => {
         console.log(err);
         setBusiness(null);
-        setFilterValue(null);
+        setFilteredBusiness(null);
       });
   }, []);
 
-  const handleFilterBussines = (value) => {};
+  const filterByOption = (field, value, object) => {
+    const filteredObject = object.filter((obj) =>
+      obj[field].toLowerCase().includes(value.toLowerCase())
+    );
+    filteredBusiness !== false
+      ? setFilteredBusiness(filteredObject)
+      : setFilteredBusiness(business);
+    console.log(business);
+  };
 
   return (
     <Layout>
       <Content>
-        {business !== null && <AutoCompleteInput />}
-        {/* <Space direction="horizontal" wrap={true}> */}
+        {business !== null && (
+          <AutoCompleteInput
+            options={autoCompleteOptions}
+            handleInput={filterByOption}
+            object={business}
+          />
+        )}
         <div
           style={{
             width: "100%",
             overflow: "scroll",
             height: "450px",
-            border: "1px solid black",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
             justifyItems: "center",
@@ -47,11 +65,10 @@ const BusinessList = () => {
           }}
         >
           {business !== null &&
-            business.map((company) => {
+            filteredBusiness.map((company) => {
               return <BussinesCard company={company} key={company.id} />;
             })}
         </div>
-        {/* </Space> */}
       </Content>
     </Layout>
   );
