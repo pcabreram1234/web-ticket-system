@@ -11,12 +11,12 @@ import SocialMediaForm from "../../components/modals/SocialMedialForm";
 import GeoLocationModal from "../../components/modals/GeoLocationModal";
 import { useHookstate } from "@hookstate/core";
 import { businessInfo } from "../../context";
-
+import { loadProvinces } from "../../utils/provinces";
 import UploadButton from "../buttons/Upload";
 import PhoneInput from "react-phone-number-input";
-import Provinces from "../../json/provinces.json";
 import CitiesOfCountry from "../../json/cities.json";
 import { insertCompanies } from "../../supabase/queries/company";
+import { useProvinces } from "../../hooks/useProvinces";
 
 const AddCompaniesForm = () => {
   const [servicesTypes, setServicesTypes] = useState([]);
@@ -24,7 +24,7 @@ const AddCompaniesForm = () => {
   const [showGeolocationModal, setShowGeoLocationModal] = useState(false);
   const [cities, setCities] = useState([]);
   const [citySelected, setCitySelected] = useState([]);
-  const [provinces, setProvices] = useState([]);
+  const provinces = useProvinces();
   const state = useHookstate(businessInfo);
 
   const { t } = useTranslation();
@@ -35,7 +35,6 @@ const AddCompaniesForm = () => {
     fetchAllServices().then((services) => {
       setServicesTypes(services);
     });
-    loadProvinces();
   }, []);
 
   const handleShowSocialForm = () => {
@@ -63,15 +62,10 @@ const AddCompaniesForm = () => {
     state.city.set(city);
   };
 
-  const loadProvinces = () => {
-    setProvices(Provinces.map((province) => province));
-  };
-
   const handleSubmit = () => {
     form.validateFields().then((resp) => {
       insertCompanies(state.get()).then((resp) => {
         if ((resp = "business-added")) {
-          
         }
       });
     });
