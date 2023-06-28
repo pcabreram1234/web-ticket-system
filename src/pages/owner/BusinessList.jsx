@@ -59,8 +59,9 @@ const BusinessList = () => {
             height: "450px",
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+            gridTemplateRows: "repeat(auto-fit)",
             justifyItems: "center",
-
+            alignItems: "start",  
             margin: "auto",
           }}
         >
