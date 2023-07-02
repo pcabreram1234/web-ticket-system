@@ -4,22 +4,20 @@ import Cities from "../json/cities.json";
 
 const useCities = (Province_name) => {
   const [cities, setCities] = useState([]);
-  const [citySelected, setCitySelected] = useState([]);
 
   const handleSelectCities = () => {
-    const { Cities } = Province;
+    console.log(Cities);
     for (const key in Cities) {
       if (key === Province_name) {
-        console.log(key);
         setCities(Cities[key].cities);
-        setCitySelected(Cities[key].cities[0]);
       }
     }
-    return { cities, citySelected };
+    return { cities };
   };
+
   useEffect(() => {
     handleSelectCities();
-  }, []);
+  }, [Province_name]);
 };
 
 export { useCities };

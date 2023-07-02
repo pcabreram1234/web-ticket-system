@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { fetchAllServices } from "../../supabase/queries/service";
 import PhoneInput from "react-phone-number-input";
 import { useProvinces } from "../../hooks/useProvinces";
-import { useCities } from "../../hooks/useCities";
+import CitiesOfCountry from "../../json/cities.json";
 const EditBusinessModal = ({
   isModaVisible,
   setFormData,
@@ -14,6 +14,7 @@ const EditBusinessModal = ({
   const { t } = useTranslation();
   const [servicesTypes, setServicesTypes] = useState([]);
   const [form] = Form.useForm();
+  const [cities, setCities] = useState([]);
   const provinces = useProvinces();
 
   const handleChange = (event) => {
@@ -21,19 +22,23 @@ const EditBusinessModal = ({
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const cities = useCities(provinces);
+  const handleSelectCities = (province_name) => {
+    setCities(null);
+    const { Cities } = CitiesOfCountry;
+    for (const key in Cities) {
+      if (key === province_name) {
+        setCities(Cities[key].cities);
+      }
+    }
+  };
+
   useEffect(() => {
     form.resetFields();
     fetchAllServices().then((services) => {
       setServicesTypes(services);
     });
-    // console.log(formData);
-    console.log(cities);
+    handleSelectCities(formData.state);
   }, []);
-
-  useEffect(() => {
-    console.log(formData);
-  }, [handleChange || formData]);
 
   return (
     <Modal
@@ -108,11 +113,13 @@ const EditBusinessModal = ({
           />
         </Form.Item>
 
-        <Form.Item label="State" name={"state"}>
+        <Form.Item label="State" name={"state"} initialValue={formData.state}>
           <Select
-            defaultValue={formData.state}
+            value={formData.state}
             onChange={(e) => {
               setFormData((prevData) => ({ ...prevData, state: e }));
+              handleSelectCities(e);
+              setFormData((prevData) => ({ ...prevData, city: cities[0] }));
             }}
             options={provinces.map((province) => ({
               label: province,
@@ -121,13 +128,16 @@ const EditBusinessModal = ({
           />
         </Form.Item>
 
-        <Form.Item label="City">
+        <Form.Item label="City" initialValue={formData.city}>
           <Select
-            value={formData.city}
-            // onChange={(e) => {
-            //   handleChangeCity(e);
-            // }}
-            // options={cities.map((city) => ({ label: city, value: city }))}
+            value={formData.city ?? cities[0]}
+            onChange={(e) => {
+              setFormData((prevData) => ({ ...prevData, city: e }));
+            }}
+            options={cities.map((city) => ({
+              label: city,
+              value: city,
+            }))}
           />
         </Form.Item>
         {/*  <Form.Item>
