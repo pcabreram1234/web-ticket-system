@@ -6,7 +6,7 @@ const CompanyProvider = ({ children }) => {
   const [company, setCompany] = useState({
     user_id: "",
     name: "",
-    type: "",
+    service_type: "",
     address: "",
     socialMedia: {
       facebook: {
@@ -88,7 +88,7 @@ const CompanyProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    console.log(company.socialMedia);
+    console.log(company);
   }, [handleCompanyInfo]);
 
   return (

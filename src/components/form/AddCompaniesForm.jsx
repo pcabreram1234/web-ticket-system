@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Form, Select, Input, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import { fetchAllServices } from "../../supabase/queries/service";
@@ -9,14 +9,12 @@ import {
 } from "@ant-design/icons";
 import SocialMediaForm from "../../components/modals/SocialMedialForm";
 import GeoLocationModal from "../../components/modals/GeoLocationModal";
-import { useHookstate } from "@hookstate/core";
-import { businessInfo } from "../../context";
-import { loadProvinces } from "../../utils/provinces";
 import UploadButton from "../buttons/Upload";
 import PhoneInput from "react-phone-number-input";
 import CitiesOfCountry from "../../json/cities.json";
 import { insertCompanies } from "../../supabase/queries/company";
 import { useProvinces } from "../../hooks/useProvinces";
+import { CompanyContext } from "../../context/CompanyContext";
 
 const AddCompaniesForm = () => {
   const [servicesTypes, setServicesTypes] = useState([]);
@@ -25,12 +23,12 @@ const AddCompaniesForm = () => {
   const [cities, setCities] = useState([]);
   const [citySelected, setCitySelected] = useState([]);
   const provinces = useProvinces();
-  const state = useHookstate(businessInfo);
-
+  const { handleCompanyInfo, company } = useContext(CompanyContext);
   const { t } = useTranslation();
   const [form] = Form.useForm();
 
   useEffect(() => {
+    handleSelectCities(provinces[0]);
     form.resetFields();
     fetchAllServices().then((services) => {
       setServicesTypes(services);
@@ -46,20 +44,14 @@ const AddCompaniesForm = () => {
   };
 
   const handleSelectCities = (province) => {
-    state.state.set(province);
     const { Cities } = CitiesOfCountry;
     for (const key in Cities) {
       if (key === province) {
         setCities(Cities[key].cities);
-        setCitySelected(Cities[key].cities[0]);
-        state.city.set(Cities[key].cities[0]);
+        handleCompanyInfo("city", null);
+        // handleCompanyInfo("state", province);
       }
     }
-  };
-
-  const handleChangeCity = (city) => {
-    setCitySelected(city);
-    state.city.set(city);
   };
 
   const handleSubmit = () => {
@@ -84,7 +76,7 @@ const AddCompaniesForm = () => {
         <Input
           placeholder={t("AddCompaniesForm-Name-PlaceHolder")}
           onInput={(e) => {
-            state.name.set(e.currentTarget.value);
+            handleCompanyInfo("name", e.currentTarget.value);
           }}
           autoFocus
         />
@@ -96,7 +88,7 @@ const AddCompaniesForm = () => {
           placeholder={t("service_type_placeholder")}
           mode="multiple"
           onChange={(e) => {
-            state.type.set(e);
+            handleCompanyInfo("service_type", e);
           }}
           options={
             servicesTypes.length > 0 &&
@@ -114,7 +106,7 @@ const AddCompaniesForm = () => {
       <Form.Item name={"address"} rules={[{ required: true, min: "10" }]}>
         <Input
           onInput={(e) => {
-            state.address.set(e.currentTarget.value);
+            handleCompanyInfo("address", e.currentTarget.value);
           }}
           placeholder={t("AddCompaniesForm-Address-PlaceHolder")}
         />
@@ -131,7 +123,7 @@ const AddCompaniesForm = () => {
       >
         <PhoneInput
           onChange={(e) => {
-            state.contact.set(e);
+            handleCompanyInfo("contact", e);
           }}
           countries={["DO", "US"]}
           className="ant-input-affix-wrapper ant-input-affix-wrapper-lg css-dev-only-do-not-override-j0nf2s"
@@ -139,10 +131,11 @@ const AddCompaniesForm = () => {
         />
       </Form.Item>
 
-      <Form.Item label="State">
+      <Form.Item label="State" initialValue={provinces[0]}>
         <Select
-          defaultValue={provinces[0]}
+          value={company.state}
           onChange={(e) => {
+            handleCompanyInfo("state", e);
             handleSelectCities(e);
           }}
           options={provinces.map((province) => ({
@@ -152,11 +145,21 @@ const AddCompaniesForm = () => {
         />
       </Form.Item>
 
-      <Form.Item label="City">
+      <Form.Item
+        label="City"
+        name={"City"}
+        initialValue={cities[0]}
+        rules={[
+          {
+            message: t("city-form-errorMessage"),
+            required: true,
+          },
+        ]}
+      >
         <Select
-          value={citySelected}
+          value={company.city}
           onChange={(e) => {
-            handleChangeCity(e);
+            handleCompanyInfo("city", e);
           }}
           options={cities.map((city) => ({ label: city, value: city }))}
         />
