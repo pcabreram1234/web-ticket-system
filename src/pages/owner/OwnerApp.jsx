@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import FooterCopyRight from "../../Layouts/FooterCopyRight";
 import AddCompaniesForm from "../../components/form/AddCompaniesForm";
 import BusinessList from "./BusinessList";
+import { CompanyProvider } from "../../context/CompanyContext";
 
 const { Content, Sider, Header, Footer } = Layout;
 const { Title } = Typography;
@@ -43,73 +44,75 @@ const OwnerApp = () => {
   const { t } = useTranslation();
 
   return (
-    <Layout>
-      <Header style={{ height: "auto" }}>
-        <Title style={{ color: "white", textAlign: "center" }}>
-          {t("OwnerApp-Title")}
-        </Title>
-      </Header>
-      <Layout
-        style={{
-          padding: "5% 20% 20% 0%",
-        }}
-      >
-        <Sider
+    <CompanyProvider>
+      <Layout>
+        <Header style={{ height: "auto" }}>
+          <Title style={{ color: "white", textAlign: "center" }}>
+            {t("OwnerApp-Title")}
+          </Title>
+        </Header>
+        <Layout
           style={{
-            backgroundColor: "transparent",
-            margin: "25px 10px",
+            padding: "5% 20% 20% 0%",
           }}
         >
-          <Button
-            style={{ margin: "5px 0", width: "100%" }}
-            onClick={() => {
-              handleShowModal("BusinessList");
-            }}
-            icon={<UnorderedListOutlined />}
-          >
-            {t("OwnerApp-Show-Companies-list")}
-          </Button>
-          <Button
-            style={{ margin: "5px 0", width: "100%" }}
-            onClick={() => {
-              handleShowModal("AddBusiness");
-            }}
-            icon={<PlusCircleFilled />}
-          >
-            {t("OwnerApp-Add-Companie")}
-          </Button>
-          <Button
-            icon={<SettingFilled />}
-            style={{ margin: "5px 0", width: "100%" }}
-            onClick={() => {
-              handleShowModal("settings");
-            }}
-          >
-            {t("OwnerApp-settings")}
-          </Button>
-          <Button
-            icon={<CloseCircleFilled />}
+          <Sider
             style={{
-              margin: "5px 0",
-              width: "100%",
-              backgroundColor: "#F879A7",
+              backgroundColor: "transparent",
+              margin: "25px 10px",
             }}
           >
-            {t("OwnerApp-close-session")}
-          </Button>
-        </Sider>
-        <Content
-          // style={{ display: "grid", width: "100%", placeItems: "center" }}
-          style={{ textAlign: "center" }}
-        >
-          {showAddBusiness && <AddCompaniesForm />}
-          {showBusinessSaved && <BusinessList />}
-        </Content>
+            <Button
+              style={{ margin: "5px 0", width: "100%" }}
+              onClick={() => {
+                handleShowModal("BusinessList");
+              }}
+              icon={<UnorderedListOutlined />}
+            >
+              {t("OwnerApp-Show-Companies-list")}
+            </Button>
+            <Button
+              style={{ margin: "5px 0", width: "100%" }}
+              onClick={() => {
+                handleShowModal("AddBusiness");
+              }}
+              icon={<PlusCircleFilled />}
+            >
+              {t("OwnerApp-Add-Companie")}
+            </Button>
+            <Button
+              icon={<SettingFilled />}
+              style={{ margin: "5px 0", width: "100%" }}
+              onClick={() => {
+                handleShowModal("settings");
+              }}
+            >
+              {t("OwnerApp-settings")}
+            </Button>
+            <Button
+              icon={<CloseCircleFilled />}
+              style={{
+                margin: "5px 0",
+                width: "100%",
+                backgroundColor: "#F879A7",
+              }}
+            >
+              {t("OwnerApp-close-session")}
+            </Button>
+          </Sider>
+          <Content
+            // style={{ display: "grid", width: "100%", placeItems: "center" }}
+            style={{ textAlign: "center" }}
+          >
+            {showAddBusiness && <AddCompaniesForm />}
+            {showBusinessSaved && <BusinessList />}
+          </Content>
+        </Layout>
+        <Footer>
+          <FooterCopyRight />
+        </Footer>
       </Layout>
-      <Footer>
-        <FooterCopyRight />
-      </Footer>
-    </Layout>
+    </CompanyProvider>
   );
 };
 

@@ -3,10 +3,10 @@ import { Card, Button, Typography, Image, Row } from "antd";
 import { useTranslation } from "react-i18next";
 import { EditFilled, DeleteFilled } from "@ant-design/icons";
 import EditBusinessModal from "../modals/EditBusinessModal";
-
+import { fetchCompanyById } from "../../supabase/queries/company";
 const BusinessCard = ({ company }) => {
   const [showEditModal, setShowEdtiModal] = useState(false);
-  const [formData, setFormData] = useState(company);
+  const [formData, setFormData] = useState();
   const { t } = useTranslation();
   const { Text } = Typography;
   return (
@@ -32,7 +32,10 @@ const BusinessCard = ({ company }) => {
             <Button
               type="primary"
               onClick={() => {
-                setShowEdtiModal((e) => !e);
+                fetchCompanyById(company.id).then((resp) => {
+                  setShowEdtiModal((e) => !e);
+                  setFormData(resp[0]);
+                });
               }}
             >
               {t("OwnerApp-Edit-Button")} <EditFilled />

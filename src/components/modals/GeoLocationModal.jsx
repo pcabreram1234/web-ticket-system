@@ -14,7 +14,7 @@ import { businessInfo } from "../../context";
 
 const { Title } = Typography;
 import i18 from "i18next";
-const GeoLocationModal = ({ cb, visible }) => {
+const GeoLocationModal = ({ cb, visible, initialCoords }) => {
   const { t } = i18;
   const coords = useLocation();
   const globalState = useHookstate(businessInfo);
@@ -60,7 +60,7 @@ const GeoLocationModal = ({ cb, visible }) => {
       )}
       {coords.length > 0 && (
         <MapContainer
-          center={coords}
+          center={initialCoords ?? coords}
           zoom={18}
           style={{ height: "100%" }}
           touchZoom

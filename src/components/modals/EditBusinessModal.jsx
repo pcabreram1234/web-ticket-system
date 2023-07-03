@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, Input, Select, Button } from "antd";
+import { ZoomInOutlined, ShareAltOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { fetchAllServices } from "../../supabase/queries/service";
 import PhoneInput from "react-phone-number-input";
 import { useProvinces } from "../../hooks/useProvinces";
 import CitiesOfCountry from "../../json/cities.json";
+import GeoLocationModal from "./GeoLocationModal";
+import SocialMediaForm from "./SocialMedialForm";
 const EditBusinessModal = ({
   isModaVisible,
   setFormData,
@@ -16,14 +19,17 @@ const EditBusinessModal = ({
   const [form] = Form.useForm();
   const [cities, setCities] = useState([]);
   const provinces = useProvinces();
+  const [showGeolocationModal, setShowGeoLocationModal] = useState(false);
+  const [showSocialMediaForm, setShowSocialMediaForm] = useState(false);
+  const { latitude, longitude } = formData.geolocation;
 
+  console.log(formData);
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
   const handleSelectCities = (province_name) => {
-    setCities(null);
     const { Cities } = CitiesOfCountry;
     for (const key in Cities) {
       if (key === province_name) {
@@ -64,14 +70,16 @@ const EditBusinessModal = ({
           />
         </Form.Item>
 
-        <Form.Item name={"service_type"}>
+        <Form.Item name={"service_type"} initialValue={formData.service_type}>
           <Select
             allowClear
             placeholder={t("service_type_placeholder")}
             mode="multiple"
             name="service_type"
-            onChange={handleChange}
-            defaultValue={formData.service_type}
+            onChange={(e) => {
+              setFormData((prevData) => ({ ...prevData, service_type: e }));
+            }}
+            value={formData.service_type}
             options={
               servicesTypes.length > 0 &&
               servicesTypes.map((service) => {
@@ -130,7 +138,7 @@ const EditBusinessModal = ({
 
         <Form.Item label="City" initialValue={formData.city}>
           <Select
-            value={formData.city ?? cities[0]}
+            value={formData.city}
             onChange={(e) => {
               setFormData((prevData) => ({ ...prevData, city: e }));
             }}
@@ -140,22 +148,29 @@ const EditBusinessModal = ({
             }))}
           />
         </Form.Item>
-        {/*  <Form.Item>
+        <Form.Item>
           <Button
             style={{ width: "100%" }}
-            onClick={handleShowGeolocationModal}
+            onClick={() => {
+              setShowGeoLocationModal(true);
+            }}
           >
             {t("AddCompaniesForm-Geolocation-button")} <ZoomInOutlined />
           </Button>
         </Form.Item>
 
         <Form.Item name={"social_media"}>
-          <Button style={{ width: "100%" }} onClick={handleShowSocialForm}>
+          <Button
+            style={{ width: "100%" }}
+            onClick={() => {
+              setShowSocialMediaForm(!showSocialMediaForm);
+            }}
+          >
             {t("AddCompaniesForm-socialMedia-PlaceHolder")}
             <ShareAltOutlined />
           </Button>
         </Form.Item>
-
+        {/*   
         <Form.Item style={{ textAlign: "center" }} rules={[{ required: true }]}>
           <UploadButton />
         </Form.Item>
@@ -195,6 +210,20 @@ const EditBusinessModal = ({
           />
         )} */}
       </Form>
+      {showGeolocationModal && (
+        <GeoLocationModal
+          cb={setShowGeoLocationModal}
+          visible={showGeolocationModal}
+          initialCoords={[latitude, longitude]}
+        />
+      )}
+
+      {showSocialMediaForm && (
+        <SocialMediaForm
+          cb={setShowSocialMediaForm}
+          visible={showSocialMediaForm}
+        />
+      )}
     </Modal>
   );
 };

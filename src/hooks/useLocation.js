@@ -6,7 +6,6 @@ export const useLocation = () => {
     const browser = navigator;
     browser.geolocation.getCurrentPosition(
       (resp) => {
-        console.log(resp);
         setCoords([resp.coords.latitude, resp.coords.longitude]);
       },
       (err) => {

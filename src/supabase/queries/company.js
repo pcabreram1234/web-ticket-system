@@ -59,3 +59,13 @@ export const insertSocialMedia = async (medias, owner_uuid) => {
     });
   }
 };
+
+export const fetchCompanyById = async (id) => {
+  isUserLogged();
+  const { data, error } = await supabase
+    .from("companies")
+    .select("*")
+    .eq("id", id)
+    .limit(1);
+  return data;
+};

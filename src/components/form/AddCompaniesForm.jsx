@@ -210,6 +210,7 @@ const AddCompaniesForm = () => {
         <GeoLocationModal
           cb={setShowGeoLocationModal}
           visible={showGeolocationModal}
+          initialCoords={null}
         />
       )}
     </Form>

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Modal, Input, Form } from "antd";
 import { FacebookFilled, InstagramFilled } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import { useHookstate } from "@hookstate/core";
-import { businessInfo, userInfo } from "../../context";
 import "../../../node_modules/react-phone-number-input/style.css";
 import PhoneInput from "react-phone-number-input";
+import { CompanyContext } from "../../context/CompanyContext";
+import { AuthContext } from "../../context/UserContext";
 
 const SocialMediaForm = ({ cb, visible }) => {
   const facebookHref = "https://www.facebook.com/";
@@ -13,20 +13,16 @@ const SocialMediaForm = ({ cb, visible }) => {
   const whatsappHref = "https://api.whatsapp.com/send?phone=";
   const { t } = useTranslation();
   const [form] = Form.useForm();
-  const state = useHookstate(businessInfo);
-  const user = useHookstate(userInfo).get().data.sub;
+  const { updateSocialMediaAccount, company, handleCompanyInfo } =
+    useContext(CompanyContext);
+  const { user } = useContext(AuthContext);
+
   const [showModal, setShowModal] = useState(visible);
   const saveChanges = () => {
     form.validateFields().then((resp) => {
       setShowModal(false);
       return true;
     });
-  };
-
-  const handleAcountUserInput = (owner_uuid, account, href, user_name) => {
-    state.socialMedia[account].owner_uuid.set(owner_uuid);
-    state.socialMedia[account].href.set(href);
-    state.socialMedia[account].user_name.set(user_name);
   };
 
   return (
@@ -41,7 +37,6 @@ const SocialMediaForm = ({ cb, visible }) => {
       }}
       onOk={() => {
         saveChanges();
-        console.log(state.get());
       }}
     >
       <Form form={form}>
@@ -50,11 +45,10 @@ const SocialMediaForm = ({ cb, visible }) => {
             placeholder={t("social-media-username")}
             prefix={<FacebookFilled style={{ color: "blue " }} />}
             onInput={(e) => {
-              handleAcountUserInput(
-                user,
+              updateSocialMediaAccount(
                 "facebook",
-                facebookHref,
-                e.currentTarget.value
+                e.currentTarget.value,
+                facebookHref
               );
             }}
           />
@@ -65,11 +59,10 @@ const SocialMediaForm = ({ cb, visible }) => {
             prefix={<InstagramFilled style={{ color: "chocolate" }} />}
             placeholder={t("social-media-username")}
             onInput={(e) => {
-              handleAcountUserInput(
-                user,
+              updateSocialMediaAccount(
                 "instagram",
-                instgramkHref,
-                e.currentTarget.value
+                e.currentTarget.value,
+                instgramkHref
               );
             }}
           />
@@ -91,7 +84,7 @@ const SocialMediaForm = ({ cb, visible }) => {
             className="ant-input-affix-wrapper ant-input-affix-wrapper-lg css-dev-only-do-not-override-j0nf2s"
             placeholder="Whatsapp"
             onChange={(e) => {
-              handleAcountUserInput(user, "whatsapp", whatsappHref, e);
+              updateSocialMediaAccount("whatsapp", e, whatsappHref);
             }}
           />
         </Form.Item>
