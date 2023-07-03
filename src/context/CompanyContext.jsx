@@ -87,10 +87,6 @@ const CompanyProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    console.log(company);
-  }, [handleCompanyInfo]);
-
   return (
     <CompanyContext.Provider
       value={{ company, handleCompanyInfo, updateSocialMediaAccount }}

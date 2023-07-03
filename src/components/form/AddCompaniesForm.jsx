@@ -20,20 +20,14 @@ const AddCompaniesForm = () => {
   const [servicesTypes, setServicesTypes] = useState([]);
   const [showSocialMediaForm, setShowSocialMediaForm] = useState(false);
   const [showGeolocationModal, setShowGeoLocationModal] = useState(false);
-  const [cities, setCities] = useState([]);
-  const [citySelected, setCitySelected] = useState([]);
+
   const provinces = useProvinces();
+  const [proviceSelected, setProvinceSelected] = useState(provinces[0]);
+  const [cities, setCities] = useState([CitiesOfCountry.Cities.Azua.cities]);
+  const [citySelected, setCitySelected] = useState(cities[0]);
   const { handleCompanyInfo, company } = useContext(CompanyContext);
   const { t } = useTranslation();
   const [form] = Form.useForm();
-
-  useEffect(() => {
-    handleSelectCities(provinces[0]);
-    form.resetFields();
-    fetchAllServices().then((services) => {
-      setServicesTypes(services);
-    });
-  }, []);
 
   const handleShowSocialForm = () => {
     setShowSocialMediaForm(true);
@@ -44,11 +38,15 @@ const AddCompaniesForm = () => {
   };
 
   const handleSelectCities = (province) => {
+    setCities([]);
     const { Cities } = CitiesOfCountry;
     for (const key in Cities) {
       if (key === province) {
         setCities(Cities[key].cities);
-        handleCompanyInfo("city", null);
+        setProvinceSelected(province);
+        setCitySelected(Cities[key].cities[0]);
+
+        // handleCompanyInfo("city", Cities[key].cities[0]);
         // handleCompanyInfo("state", province);
       }
     }
@@ -62,6 +60,12 @@ const AddCompaniesForm = () => {
       });
     });
   };
+
+  useEffect(() => {
+    fetchAllServices().then((services) => {
+      setServicesTypes(services);
+    });
+  }, []);
 
   return (
     <Form form={form} style={{ width: "80%", margin: "auto" }} size="large">
@@ -131,10 +135,10 @@ const AddCompaniesForm = () => {
         />
       </Form.Item>
 
-      <Form.Item label="State" initialValue={provinces[0]}>
+      <Form.Item label="State" initialValue={proviceSelected}>
         <Select
-          value={company.state}
-          onChange={(e) => {
+          value={proviceSelected}
+          onSelect={(e) => {
             handleCompanyInfo("state", e);
             handleSelectCities(e);
           }}
@@ -148,7 +152,7 @@ const AddCompaniesForm = () => {
       <Form.Item
         label="City"
         name={"City"}
-        initialValue={cities[0]}
+        initialValue={citySelected}
         rules={[
           {
             message: t("city-form-errorMessage"),
@@ -156,13 +160,16 @@ const AddCompaniesForm = () => {
           },
         ]}
       >
-        <Select
-          value={company.city}
-          onChange={(e) => {
-            handleCompanyInfo("city", e);
-          }}
-          options={cities.map((city) => ({ label: city, value: city }))}
-        />
+        {cities.length > 0 && (
+          <Select
+            value={citySelected}
+            onSelect={(e) => {
+              handleCompanyInfo("city", e);
+              setCitySelected(e);
+            }}
+            options={cities.map((city) => ({ label: city, value: city }))}
+          />
+        )}
       </Form.Item>
       <Form.Item>
         <Button style={{ width: "100%" }} onClick={handleShowGeolocationModal}>

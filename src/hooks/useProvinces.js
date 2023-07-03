@@ -1,15 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Provinces from "../json/provinces.json";
 const useProvinces = () => {
-  const [provinces, setProvices] = useState([]);
-
-  const loadProvinces = (cb) => {
-    setProvices(Provinces.map((province) => province));
-  };
-
-  useEffect(() => {
-    loadProvinces();
-  }, []);
+  const [provinces, setProvices] = useState(
+    Provinces.map((province) => province)
+  );
 
   return provinces;
 };
