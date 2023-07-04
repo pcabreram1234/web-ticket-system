@@ -20,7 +20,6 @@ const AddCompaniesForm = () => {
   const [servicesTypes, setServicesTypes] = useState([]);
   const [showSocialMediaForm, setShowSocialMediaForm] = useState(false);
   const [showGeolocationModal, setShowGeoLocationModal] = useState(false);
-
   const provinces = useProvinces();
   const [proviceSelected, setProvinceSelected] = useState(provinces[0]);
   const [cities, setCities] = useState([CitiesOfCountry.Cities.Azua.cities]);
@@ -54,10 +53,11 @@ const AddCompaniesForm = () => {
 
   const handleSubmit = () => {
     form.validateFields().then((resp) => {
-      insertCompanies(state.get()).then((resp) => {
-        if ((resp = "business-added")) {
-        }
-      });
+      console.log(company);
+      // insertCompanies(company).then((resp) => {
+      //   if ((resp = "business-added")) {
+      //   }
+      // });
     });
   };
 
@@ -70,6 +70,7 @@ const AddCompaniesForm = () => {
   return (
     <Form form={form} style={{ width: "80%", margin: "auto" }} size="large">
       <Form.Item
+        name={"name"}
         rules={[
           {
             required: true,
@@ -151,7 +152,7 @@ const AddCompaniesForm = () => {
 
       <Form.Item
         label="City"
-        name={"City"}
+        // name="City"
         initialValue={citySelected}
         rules={[
           {

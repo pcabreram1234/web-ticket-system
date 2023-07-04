@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useRef, useMemo } from "react";
 import { Modal, Typography } from "antd";
 import {
   MapContainer,
@@ -9,29 +9,51 @@ import {
 } from "react-leaflet";
 import { useLocation } from "../../hooks/useLocation";
 import "../../../node_modules/leaflet/dist/leaflet.css";
-import { useHookstate } from "@hookstate/core";
-import { businessInfo } from "../../context";
-
+import { CompanyContext } from "../../context/CompanyContext";
 const { Title } = Typography;
 import i18 from "i18next";
 const GeoLocationModal = ({ cb, visible, initialCoords }) => {
   const { t } = i18;
   const coords = useLocation();
-  const globalState = useHookstate(businessInfo);
   const [showModal, setShowModal] = useState(visible);
+  const { handleCompanyInfo, company } = useContext(CompanyContext);
+  const markerRef = useRef(null);
 
   const LocationMarker = () => {
-    const [position, setPosition] = useState(coords || null);
+    const [position, setPosition] = useState(coords ?? null);
+    const handlePosition = (e) => {
+      setPosition(e.latlng);
+      handleCompanyInfo("geolocation", e.latlng);
+    };
+
+    const eventHandlers = useMemo(
+      () => ({
+        dragend() {
+          const marker = markerRef.current;
+          if (marker != null) {
+            setPosition(marker._latlng);
+            handleCompanyInfo("geolocation", marker._latlng);
+            console.log(company);
+          }
+        },
+      }),
+      []
+    );
+
     const map = useMapEvents({
       click(e) {
         map.locate();
-        setPosition(e.latlng);
-        globalState.geolocation.set(e.latlng);
+        handlePosition(e);
       },
     });
 
     return position === null ? null : (
-      <Marker position={position}>
+      <Marker
+        position={position}
+        draggable
+        eventHandlers={eventHandlers}
+        ref={markerRef}
+      >
         <Popup> {t("business-location")} </Popup>
       </Marker>
     );
