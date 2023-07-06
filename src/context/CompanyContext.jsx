@@ -36,6 +36,7 @@ const CompanyProvider = ({ children }) => {
 
   const handleCompanyInfo = (prop, value) => {
     setCompany((prevData) => ({ ...prevData, [prop]: value }));
+    console.log(company);
   };
 
   const updateSocialMediaAccount = (accountType, userName, href) => {

@@ -1,12 +1,13 @@
-import React, { useState, useContext, useRef, useMemo } from "react";
+import React, {
+  useState,
+  useContext,
+  useRef,
+  useMemo,
+  useCallback,
+  useEffect,
+} from "react";
 import { Modal, Typography } from "antd";
-import {
-  MapContainer,
-  TileLayer,
-  useMapEvents,
-  Marker,
-  Popup,
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { useLocation } from "../../hooks/useLocation";
 import "../../../node_modules/leaflet/dist/leaflet.css";
 import { CompanyContext } from "../../context/CompanyContext";
@@ -16,48 +17,41 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
   const { t } = i18;
   const coords = useLocation();
   const [showModal, setShowModal] = useState(visible);
-  const { handleCompanyInfo, company } = useContext(CompanyContext);
-  const markerRef = useRef(null);
+  const { handleCompanyInfo } = useContext(CompanyContext);
+  const [position, setPosition] = useState(coords);
 
-  const LocationMarker = () => {
-    const [position, setPosition] = useState(coords ?? null);
-    const handlePosition = (e) => {
-      setPosition(e.latlng);
-      handleCompanyInfo("geolocation", e.latlng);
-    };
-
+  function LocationMarker() {
+    const markerRef = useRef(null);
     const eventHandlers = useMemo(
       () => ({
         dragend() {
           const marker = markerRef.current;
           if (marker != null) {
-            setPosition(marker._latlng);
-            handleCompanyInfo("geolocation", marker._latlng);
-            console.log(company);
+            setPosition(marker.getLatLng());
           }
         },
       }),
       []
     );
 
-    const map = useMapEvents({
-      click(e) {
-        map.locate();
-        handlePosition(e);
-      },
-    });
-
-    return position === null ? null : (
+    return (
       <Marker
-        position={position}
-        draggable
+        draggable={true}
         eventHandlers={eventHandlers}
+        position={position}
         ref={markerRef}
       >
-        <Popup> {t("business-location")} </Popup>
+        <Popup minWidth={90}>
+          <span>"Hola"</span>
+        </Popup>
       </Marker>
     );
-  };
+  }
+
+  useEffect(() => {
+    // handleCompanyInfo("geolocation", position);
+    console.log(position);
+  }, [position]);
 
   return (
     <Modal
@@ -82,7 +76,7 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
       )}
       {coords.length > 0 && (
         <MapContainer
-          center={initialCoords ?? coords}
+          center={coords}
           zoom={18}
           style={{ height: "100%" }}
           touchZoom
