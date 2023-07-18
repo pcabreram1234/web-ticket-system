@@ -150,7 +150,8 @@ const NavBar = () => {
   };
 
   const handleUserTypeMenu = () => {
-    if (user !== null) {
+    if (user !== null && user !== undefined) {
+      console.log(user);
       const user_type = user.user_metadata.user_type;
       console.log(user_type);
       switch (user_type) {

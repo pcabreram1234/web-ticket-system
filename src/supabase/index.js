@@ -42,18 +42,24 @@ export async function singUp(user_data) {
 }
 
 export async function signInWithEmail(email, password) {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: email,
-    password: password,
-  });
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: email,
+      password: password,
+    });
 
-  if (error) {
-    openNotification(i18n.t("error-signin"), error.message, "error");
+    if (error) {
+      openNotification(i18n.t("error-signin"), error.message, "error");
+      return error;
+    }
+    if (data.user !== null) {
+      openNotification("wellcome", i18n.t("wellcome-description"), "success");
+      return data.user;
+    }
+  } catch (error) {
+    console.log(error);
+    openNotification(i18n.t("error-signin"), error, "error");
     return error;
-  }
-  if (data.user !== null) {
-    openNotification("wellcome", i18n.t("wellcome-description"), "success");
-    return data.user;
   }
 }
 
