@@ -6,8 +6,14 @@ import React, {
   useCallback,
   useEffect,
 } from "react";
-import { Modal, Typography } from "antd";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { Modal, Typography, Button } from "antd";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvents,
+} from "react-leaflet";
 import { useLocation } from "../../hooks/useLocation";
 import "../../../node_modules/leaflet/dist/leaflet.css";
 import { CompanyContext } from "../../context/CompanyContext";
@@ -18,35 +24,35 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
   const coords = useLocation();
   const [showModal, setShowModal] = useState(visible);
   const { handleCompanyInfo } = useContext(CompanyContext);
-  const [position, setPosition] = useState(coords);
+  const [position, setPosition] = useState(coords && initialCoords);
 
   function LocationMarker() {
-    const markerRef = useRef(null);
-    const eventHandlers = useMemo(
-      () => ({
-        dragend() {
-          const marker = markerRef.current;
-          if (marker != null) {
-            setPosition(marker.getLatLng());
-          }
-        },
-      }),
-      []
-    );
+    const map = useMapEvents({
+      locationfound(e) {
+        console.log(e);
+      },
+      click(e) {
+        console.log(e);
+      },
+      dragend(e) {
+        console.log(e.target);
+        console.log(`Se ha movido el marker ${e.target}`);
+      },
+    });
 
-    return (
-      <Marker
-        draggable={true}
-        eventHandlers={eventHandlers}
-        position={position}
-        ref={markerRef}
-      >
+    return position === null ? null : (
+      <Marker draggable={true} position={position}>
         <Popup minWidth={90}>
           <span>"Hola"</span>
         </Popup>
       </Marker>
     );
   }
+
+  const getCurrentUbicacion = () => {
+    const locationInfo = LocationMarker.locate();
+    console.log(locationInfo);
+  };
 
   useEffect(() => {
     // handleCompanyInfo("geolocation", position);
@@ -86,8 +92,10 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
             attribution='&copy; <a href="https://www.google.com/intl/en-GB_ALL/permissions/geoguidelines/">Google Maps</a> contributors'
             url="https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}"
           />
+     
         </MapContainer>
       )}
+           <Button onClick={getCurrentUbicacion}>Get Ubication</Button>
     </Modal>
   );
 };

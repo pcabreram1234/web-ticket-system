@@ -21,10 +21,17 @@ const LoginForm = () => {
       if (internetConnection) {
         const email = form.getFieldValue("email");
         const password = form.getFieldValue("password");
-        const signIn = signInWithEmail(email, password).then((resp) => {
-          navigate("/");
-          setUser(resp);
-        });
+        const signIn = signInWithEmail(email, password)
+          .then((resp) => {
+            if (resp !== null && resp !== undefined) {
+              navigate("/");
+              setUser(resp);
+            }
+            console.log(resp);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     });
   };

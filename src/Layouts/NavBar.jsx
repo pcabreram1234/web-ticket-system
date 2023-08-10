@@ -13,9 +13,11 @@ import { AiOutlineLogout, AiOutlineLogin } from "react-icons/ai";
 import { logOut } from "../supabase";
 import { useNavBarNavigation } from "../hooks/useNavigateNavBar";
 import { AuthContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
-const NavBar = () => {
+const NavBar = (props) => {
   const { t } = useTranslation();
+  const history = useNavigate();
   const { user, setUser } = useContext(AuthContext);
   const menuItems = {
     menu_for_normal_logged_user: [
@@ -44,7 +46,7 @@ const NavBar = () => {
         icon: <FaMapMarkerAlt />,
       },
       {
-        label: user !== null ? user.email : "",
+        label: user !== null && user !== undefined ? user.email : "",
         key: "User-Name-Menu",
         icon: <FaUserAlt />,
       },
@@ -81,7 +83,7 @@ const NavBar = () => {
         icon: <FaMapMarkerAlt />,
       },
       {
-        label: user !== null ? user.email : "",
+        label: user !== null && user !== undefined ? user.email : "",
         key: "User-Name-Menu",
         icon: <FaUserAlt />,
       },
@@ -173,7 +175,10 @@ const NavBar = () => {
 
   useEffect(() => {
     setMenuItmes(handleUserTypeMenu());
-  }, [user]);
+    if (user === null || user === undefined) {
+      history("/login");
+    }
+  }, [user, history]);
 
   return (
     <Menu

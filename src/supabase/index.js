@@ -50,16 +50,17 @@ export async function signInWithEmail(email, password) {
 
     if (error) {
       openNotification(i18n.t("error-signin"), error.message, "error");
-      return error;
+      // return error;
+      throw error;
     }
-    if (data.user !== null) {
+    if (data.user !== null && data.user !== undefined) {
       openNotification("wellcome", i18n.t("wellcome-description"), "success");
       return data.user;
     }
   } catch (error) {
     console.log(error);
-    openNotification(i18n.t("error-signin"), error, "error");
-    return error;
+    // openNotification(i18n.t("error-signin"), error, "error");
+    // return error;
   }
 }
 
