@@ -1,11 +1,14 @@
 import { useEffect, useContext } from "react";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../context/UserContext";
+
+//Este hook se ecnarga de rediriger o no al usuario a la pagina de login en caso de que no este logeado
 const useNavBarNavigation = (path) => {
   const navigate = useNavigate();
-  const userState = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   useEffect(() => {
-    if (userState !== undefined) {
+    console.log(user);
+    if (user !== undefined || user !== null) {
       if (path === "/login") {
         return false;
       } else {

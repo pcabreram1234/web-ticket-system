@@ -173,6 +173,7 @@ const NavBar = (props) => {
     }
   };
 
+  console.log("El contexto")
   useEffect(() => {
     setMenuItmes(handleUserTypeMenu());
     if (user === null || user === undefined) {
