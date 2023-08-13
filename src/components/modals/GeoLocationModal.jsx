@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useRef,
-  useMemo,
-  useCallback,
-  useEffect,
-} from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { Modal, Typography, Button } from "antd";
 import {
   MapContainer,
@@ -29,7 +22,8 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
   function LocationMarker() {
     const map = useMapEvents({
       locationfound(e) {
-        console.log(e);
+        console.log(e.latlng);
+        setPosition(coords);
       },
       click(e) {
         console.log(e);
@@ -40,8 +34,9 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
       },
     });
 
+    console.log(coords);
     return position === null ? null : (
-      <Marker draggable={true} position={position}>
+      <Marker draggable={true} position={coords}>
         <Popup minWidth={90}>
           <span>"Hola"</span>
         </Popup>
@@ -50,7 +45,7 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
   }
 
   const getCurrentUbicacion = () => {
-    const locationInfo = LocationMarker.locate();
+    const locationInfo = LocationMarker.call(this);
     console.log(locationInfo);
   };
 
@@ -92,10 +87,9 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
             attribution='&copy; <a href="https://www.google.com/intl/en-GB_ALL/permissions/geoguidelines/">Google Maps</a> contributors'
             url="https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}"
           />
-     
         </MapContainer>
       )}
-           <Button onClick={getCurrentUbicacion}>Get Ubication</Button>
+      {/* <Button onClick={getCurrentUbicacion}>Get Ubication</Button> */}
     </Modal>
   );
 };
