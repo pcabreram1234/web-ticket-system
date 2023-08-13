@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import SignUp from "../pages/SignUp";
 import LoginForm from "../components/form/LoginForm";
 import NavBar from "../Layouts/NavBar";
 import OwnerApp from "../pages/owner/OwnerApp";
+import { useNavBarNavigation } from "../hooks/useNavigateNavBar";
 
 const App = () => {
+  useNavBarNavigation();
   return (
     <>
       <NavBar />
