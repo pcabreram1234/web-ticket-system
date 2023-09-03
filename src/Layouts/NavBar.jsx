@@ -13,11 +13,13 @@ import { AiOutlineLogout, AiOutlineLogin } from "react-icons/ai";
 import { logOut } from "../supabase";
 import { useNavBarNavigation } from "../hooks/useNavigateNavBar";
 import { AuthContext } from "../context/UserContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { saveUserCurrentRoute } from "../supabase/queries/routes/routes";
 
 const NavBar = (props) => {
   const { t } = useTranslation();
   const history = useNavigate();
+  const location = useLocation();
   const { user, setUser } = useContext(AuthContext);
   const menuItems = {
     menu_for_normal_logged_user: [
@@ -173,8 +175,13 @@ const NavBar = (props) => {
     }
   };
 
-  console.log("El contexto")
+  console.log("El contexto");
   useEffect(() => {
+    // console.log(user);
+    if (user) {
+      console.log(`El usuario es: ${user.id}`)
+      saveUserCurrentRoute(location.pathname, user.id);
+    }
     setMenuItmes(handleUserTypeMenu());
     if (user === null || user === undefined) {
       history("/login");
