@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../supabase";
+import {} from "../supabase/index"
 
 const AuthContext = React.createContext();
-
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
   const handleUserInfo = () => {
+
     const session = supabase.auth
       .getSession()
       .then((resp) => {
