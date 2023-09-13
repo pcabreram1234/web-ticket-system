@@ -175,10 +175,7 @@ const NavBar = (props) => {
     }
   };
 
-<<<<<<< HEAD
-=======
   console.log("El contexto");
->>>>>>> 9760be44b54d2a28ab02b49c9f76130aeaa90f67
   useEffect(() => {
     // console.log(user);
     if (user) {

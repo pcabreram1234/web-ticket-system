@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const CompanyContext = React.createContext();
 
@@ -36,7 +36,6 @@ const CompanyProvider = ({ children }) => {
 
   const handleCompanyInfo = (prop, value) => {
     setCompany((prevData) => ({ ...prevData, [prop]: value }));
-    console.log(company);
   };
 
   const updateSocialMediaAccount = (accountType, userName, href) => {

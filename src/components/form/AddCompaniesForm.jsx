@@ -34,6 +34,7 @@ const AddCompaniesForm = () => {
 
   const handleShowGeolocationModal = () => {
     setShowGeoLocationModal(true);
+    console.log(typeof company.geolocation);
   };
 
   const handleSelectCities = (province) => {
@@ -65,6 +66,7 @@ const AddCompaniesForm = () => {
     fetchAllServices().then((services) => {
       setServicesTypes(services);
     });
+    console.log(company);
   }, []);
 
   return (
@@ -221,7 +223,7 @@ const AddCompaniesForm = () => {
         <GeoLocationModal
           cb={setShowGeoLocationModal}
           visible={showGeolocationModal}
-          initialCoords={null}
+          initialCoords={company.geolocation}
         />
       )}
     </Form>
