@@ -10,6 +10,9 @@ const AuthProvider = ({ children }) => {
     const session = supabase.auth
       .getSession()
       .then((resp) => {
+        console.log(
+          `Existe el contexto con el valor ${resp.data.session.user.id}`
+        );
         setUser(resp?.data?.session?.user ?? null);
       })
       .catch((error) => {

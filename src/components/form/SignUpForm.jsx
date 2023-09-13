@@ -33,7 +33,6 @@ const SignUpForm = () => {
           state.signUpAlertType.set("error");
         }
         setShowModal(true);
-        console.log(state.get());
       });
     });
   };

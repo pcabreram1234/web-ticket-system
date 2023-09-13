@@ -24,7 +24,7 @@ const LoginForm = () => {
         const signIn = signInWithEmail(email, password)
           .then((resp) => {
             if (resp !== null && resp !== undefined) {
-              navigate("/");
+              navigate("/home");
               setUser(resp);
             }
             console.log(resp);

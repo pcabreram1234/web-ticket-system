@@ -1,4 +1,4 @@
-import { supabase } from "../index";
+import { supabase } from "../../index";
 
 export async function fetchUserType(user_id) {
   let { data, error } = await supabase

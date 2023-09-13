@@ -23,20 +23,29 @@ const EditBusinessModal = ({
   const [showSocialMediaForm, setShowSocialMediaForm] = useState(false);
   const { latitude, longitude } = formData.geolocation;
 
-  console.log(formData);
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+    console.log(formData);
   };
 
   const handleSelectCities = (province_name) => {
     const { Cities } = CitiesOfCountry;
     for (const key in Cities) {
       if (key === province_name) {
+        console.log(key);
         setCities(Cities[key].cities);
+        setFormData((prevData) => ({
+          ...prevData,
+          city: Cities[key].cities[0],
+        }));
       }
     }
   };
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   useEffect(() => {
     form.resetFields();

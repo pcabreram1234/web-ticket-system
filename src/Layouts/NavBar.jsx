@@ -144,7 +144,7 @@ const NavBar = (props) => {
       if (e.key === "Log-Out-Menu-option") {
         logOut().then((resp) => {
           setUser(null);
-          navigate("/login");
+          navigate();
         });
       }
       navigate(e.key);
@@ -173,7 +173,6 @@ const NavBar = (props) => {
     }
   };
 
-  console.log("El contexto")
   useEffect(() => {
     setMenuItmes(handleUserTypeMenu());
     if (user === null || user === undefined) {

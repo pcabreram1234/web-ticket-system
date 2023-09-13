@@ -14,7 +14,7 @@ const UploadButton = () => {
     const file = new FileReader();
     file.readAsDataURL(e.file.originFileObj);
     file.onload = () => setPreviewImage(file.result);
-    console.log(e);
+  
     setFileList(e.fileList);
   };
 

@@ -36,9 +36,7 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
   const handleDragendMarker = () => {
     const marker = markerRef.current;
     if (marker !== null) {
-      console.log("Marker movido");
       setPosition(marker.getLatLng());
-      console.log(position);
     }
   };
 
