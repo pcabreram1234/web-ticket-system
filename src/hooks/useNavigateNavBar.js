@@ -22,17 +22,21 @@ const useNavBarNavigation = () => {
         case "/login":
           navigate("/home");
           break;
+
+        case "":
+          navigate("/home");
+          break;
       }
     } else {
       navigate("/login");
     }
-    saveLastRoute(location.pathname);
-  }, [location, navigate]);
-
-  useEffect(() => {
-    // Actualizar la ubicación anterior
     setPreviousLocation(location.pathname);
+    saveLastRoute(location.pathname);
   }, [location]);
+
+  // useEffect(() => {
+  //   // Actualizar la ubicación anterior
+  // }, [location]);
 
   return navigate;
 };

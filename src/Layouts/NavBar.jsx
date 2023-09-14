@@ -16,7 +16,7 @@ import { AuthContext } from "../context/UserContext";
 import { useNavigate, useLocation } from "react-router-dom";
 import { saveUserCurrentRoute } from "../supabase/queries/routes/routes";
 
-const NavBar = (props) => {
+const NavBar = () => {
   const { t } = useTranslation();
   const history = useNavigate();
   const location = useLocation();
@@ -146,10 +146,10 @@ const NavBar = (props) => {
       if (e.key === "Log-Out-Menu-option") {
         logOut().then((resp) => {
           setUser(null);
-          navigate();
+          return navigate;
         });
       }
-      navigate(e.key);
+      history(e.key);
     }
   };
 
@@ -175,13 +175,7 @@ const NavBar = (props) => {
     }
   };
 
-  console.log("El contexto");
   useEffect(() => {
-    // console.log(user);
-    if (user) {
-      console.log(`El usuario es: ${user.id}`)
-      saveUserCurrentRoute(location.pathname, user.id);
-    }
     setMenuItmes(handleUserTypeMenu());
     if (user === null || user === undefined) {
       history("/login");
