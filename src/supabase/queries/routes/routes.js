@@ -14,3 +14,21 @@ export const saveUserCurrentRoute = async (routeToSave, userId) => {
     console.log(error);
   }
 };
+
+export const fetchLastRoute = async (userId) => {
+  isUserLogged();
+  const { data, error } = await supabase
+    .from("last_routes")
+    .select("last_route")
+    .eq("user_id", userId)
+    .order("timestamp", { ascending: false })
+    .limit(1);
+
+  console.log(userId);
+
+  if (error) {
+    throw new Error(error);
+  }
+  console.log(data);
+  return data;
+};

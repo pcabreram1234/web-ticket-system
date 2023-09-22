@@ -3,18 +3,18 @@ import { Form, Input, Button, Layout, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { signInWithEmail } from "../../supabase";
 import { checkInternetConnection } from "../../utils/internet";
-import { useNavBarNavigation } from "../../hooks/useNavigateNavBar";
 import FooterCopyRight from "../../Layouts/FooterCopyRight";
 import { AuthContext } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const { Header, Footer, Content } = Layout;
 const { Title } = Typography;
 
 const LoginForm = () => {
-  const { setUser } = useContext(AuthContext);
+  const { setUser, user } = useContext(AuthContext);
   const [form] = Form.useForm();
   const { t } = useTranslation();
-  const navigate = useNavBarNavigation();
+  const history = useNavigate();
   const handleSubmit = () => {
     form.validateFields().then(() => {
       const internetConnection = checkInternetConnection();
@@ -23,11 +23,14 @@ const LoginForm = () => {
         const password = form.getFieldValue("password");
         const signIn = signInWithEmail(email, password)
           .then((resp) => {
-            if (resp !== null && resp !== undefined) {
-              navigate("/home");
+            if (resp.id) {
               setUser(resp);
+              console.log("Sesion iniciada");
+              history("/home");
+            } else {
+              console.log(error);
             }
-            console.log(resp);
+            // console.log(resp);
           })
           .catch((err) => {
             console.log(err);

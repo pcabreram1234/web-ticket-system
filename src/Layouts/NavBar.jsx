@@ -11,21 +11,20 @@ import {
 } from "react-icons/fa";
 import { AiOutlineLogout, AiOutlineLogin } from "react-icons/ai";
 import { logOut } from "../supabase";
-import { useNavBarNavigation } from "../hooks/useNavigateNavBar";
 import { AuthContext } from "../context/UserContext";
-import { useNavigate, useLocation } from "react-router-dom";
+import { redirect, useNavigate, useLocation } from "react-router-dom";
 import { saveUserCurrentRoute } from "../supabase/queries/routes/routes";
 
 const NavBar = () => {
   const { t } = useTranslation();
+  const { user, setUser } = useContext(AuthContext);
   const history = useNavigate();
   const location = useLocation();
-  const { user, setUser } = useContext(AuthContext);
   const menuItems = {
     menu_for_normal_logged_user: [
       {
         label: t("Home-Menu-option"),
-        key: "/",
+        key: "/home",
         icon: <FaHome />,
       },
       {
@@ -62,7 +61,7 @@ const NavBar = () => {
     menu_for_bussiness_owner_logged_user: [
       {
         label: t("Home-Menu-option"),
-        key: "/",
+        key: "/home",
         icon: <FaHome />,
       },
       {
@@ -104,27 +103,32 @@ const NavBar = () => {
     menu_for_unlogged_user: [
       {
         label: t("Home-Menu-option"),
-        key: "/",
+        key: "/home",
         icon: <FaHome />,
+        disabled: true,
       },
       {
         label: t("Offers-Menu-option"),
         key: "/offers",
+        disabled: true,
       },
       {
         label: t("Schedule-Menu-option"),
         key: "/schedule",
         icon: <FaCalendar />,
+        disabled: true,
       },
       {
         label: t("Reservation-Menu-option"),
         key: "/reservation",
         icon: <FaCalendarCheck />,
+        disabled: true,
       },
       {
         label: t("Use-Location-Menu-option"),
         key: "/useLocation",
         icon: <FaMapMarkerAlt />,
+        disabled: true,
       },
 
       {
@@ -134,19 +138,19 @@ const NavBar = () => {
       },
     ],
   };
+
   const [itemsForMenu, setMenuItmes] = useState(
     menuItems.menu_for_unlogged_user
   );
 
-  const navigate = useNavBarNavigation();
-
   const handleClick = (e) => {
-    setMenuItmes(handleUserTypeMenu());
+    handleUserTypeMenu();
     if (e.key !== "User-Name-Menu") {
       if (e.key === "Log-Out-Menu-option") {
         logOut().then((resp) => {
           setUser(null);
-          return navigate;
+          handleUserTypeMenu();
+          return history("/login");
         });
       }
       history(e.key);
@@ -154,33 +158,45 @@ const NavBar = () => {
   };
 
   const handleUserTypeMenu = () => {
-    if (user !== null && user !== undefined) {
-      console.log(user);
+    // debugger;
+    console.log(user);
+    if (user !== null) {
       const user_type = user.user_metadata.user_type;
-      console.log(user_type);
       switch (user_type) {
         case "business_owner":
           if (itemsForMenu !== menuItems.menu_for_bussiness_owner_logged_user) {
-            return menuItems.menu_for_bussiness_owner_logged_user;
+            return setMenuItmes(menuItems.menu_for_bussiness_owner_logged_user);
           }
           break;
         case "customer":
           if (itemsForMenu !== menuItems.menu_for_normal_logged_user) {
-            return menuItems.menu_for_normal_logged_user;
+            return setMenuItmes(menuItems.menu_for_normal_logged_user);
           }
           break;
       }
     } else {
-      return menuItems.menu_for_unlogged_user;
+      return setMenuItmes(menuItems.menu_for_unlogged_user);
     }
   };
 
+  // Al colocar como dependencia el state user, ya sea que exista o no un usuario ya logeado modificará el menu actual
   useEffect(() => {
-    setMenuItmes(handleUserTypeMenu());
+    console.log("Entre al loop");
+    console.log(user);
+    handleUserTypeMenu();
     if (user === null || user === undefined) {
-      history("/login");
+      redirect("/login");
     }
-  }, [user, history]);
+  }, [user]);
+
+  useEffect(() => {
+    if (user !== null && user !== undefined) {
+      console.log(user);
+      const { id } = user;
+      console.log(id);
+      saveUserCurrentRoute(location.pathname, id);
+    }
+  }, [location.pathname]);
 
   return (
     <Menu

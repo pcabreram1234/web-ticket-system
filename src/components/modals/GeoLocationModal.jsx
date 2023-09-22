@@ -18,19 +18,26 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
   const coords = useLocation();
   const [showModal, setShowModal] = useState(visible);
   const { handleCompanyInfo } = useContext(CompanyContext);
-  const [position, setPosition] = useState();
+  const [position, setPosition] = useState(null);
   const markerRef = useRef(null);
 
   function LocationMarker() {
     const map = useMapEvents({
       click(e) {
-        setPosition(e.latlng);
+        const { lat, lng } = e.latlng;
+        setPosition([lat, lng]);
       },
     });
 
-    if (position === null || position === undefined) {
-      setPosition(coords);
-    }
+    const handleStartedCoords = () => {
+      if (position === null || position === undefined) {
+        setPosition(coords);
+      }
+    };
+
+    useEffect(() => {
+      handleStartedCoords();
+    }, []);
   }
 
   const handleDragendMarker = () => {
@@ -39,6 +46,11 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
       setPosition(marker.getLatLng());
     }
   };
+
+  useEffect(() => {
+    console.log(position);
+    handleCompanyInfo("geolocation", position);
+  }, [position]);
 
   return (
     <Modal
@@ -51,17 +63,19 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
         cb(false);
       }}
       onOk={() => {
+        console.log(`La posicion a guardar es ${position}`);
         setShowModal(false);
+        cb(false);
       }}
       bodyStyle={{ height: "400px" }}
       centered={true}
     >
-      {coords.length === 0 && (
+      {coords === null && (
         <div style={{ display: "flex", alignItems: "center", height: "100%" }}>
           <Title color="red">{t("Searching-Geolocation")}</Title>
         </div>
       )}
-      {coords.length > 0 && (
+      {coords !== null && (
         <MapContainer
           center={coords}
           zoom={18}

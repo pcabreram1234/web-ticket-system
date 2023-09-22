@@ -5,16 +5,16 @@ import SignUp from "../pages/SignUp";
 import LoginForm from "../components/form/LoginForm";
 import NavBar from "../Layouts/NavBar";
 import OwnerApp from "../pages/owner/OwnerApp";
-import { useNavBarNavigation } from "../hooks/useNavigateNavBar";
+import LastRoute from "../hooks/LastRoute";
 
 const App = () => {
-  useNavBarNavigation();
   return (
     <>
       <NavBar />
+      <LastRoute />
       <Routes>
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/My-config" element={<OwnerApp />} />
       </Routes>
