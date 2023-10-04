@@ -13,16 +13,21 @@ function LastRoute() {
 
   useEffect(() => {
     if (isUserAutenticated) {
-      console.log(user.id);
       fetchLastRoute(user.id)
         .then((resp) => {
-          console.log("La ruta es" + resp[0].last_route);
-          history(resp[0].last_route);
+          const { last_route } = resp[0];
+          if (last_route === "/login") {
+            history("/home");
+          } else {
+            history(resp[0].last_route);
+          }
         })
         .catch((err) => {
           console.log(err);
           history("/login");
         });
+    }else{
+      history("/login");
     }
   }, [user]);
 }

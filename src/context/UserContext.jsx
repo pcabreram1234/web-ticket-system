@@ -8,7 +8,6 @@ const AuthProvider = ({ children }) => {
   const handleUserInfo = async () => {
     const { data, error } = await supabase.auth.getUser();
     setUser(data.user ?? null);
-    console.log(user);
     return data.user;
   };
 

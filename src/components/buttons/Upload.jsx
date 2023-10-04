@@ -1,21 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { Upload, Modal, Image, Button } from "antd";
+import React, { useState, useContext } from "react";
+import { Upload, Modal, Button } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import { handleUploadFile } from "../../supabase/storage";
+import { CompanyContext } from "../../context/CompanyContext";
 
 const UploadButton = () => {
   const [fileList, setFileList] = useState([]);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [titleModal, setTitleModal] = useState([]);
   const [previewImage, setPreviewImage] = useState([]);
+  const context = useContext(CompanyContext);
+  const { handleCompanyInfo } = context;
   const { t } = useTranslation();
 
   const onChange = (e) => {
     const file = new FileReader();
     file.readAsDataURL(e.file.originFileObj);
     file.onload = () => setPreviewImage(file.result);
-  
     setFileList(e.fileList);
+
+    console.log(fileList);
+
+    if (fileList !== []) {
+      handleCompanyInfo("icon", fileList[0]);
+    }
   };
 
   const handlePreview = (file) => {
@@ -51,7 +60,12 @@ const UploadButton = () => {
         fileList={fileList}
         action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
       >
-        {fileList.length > 0 ? [] : ButtonToUpload}
+        {fileList.length < 1 && (
+          <Button>
+            {t("upload-bussiness-icon")}
+            <PlusCircleFilled />
+          </Button>
+        )}
       </Upload>
       {showPreviewModal && (
         <Modal

@@ -1,5 +1,6 @@
 import { supabase } from "../index";
 import { isUserLogged } from "../../utils/isUserLogged";
+import { openNotification } from "../../components/notifications/NotConnection";
 
 export const fetchAllCompaniesByUser = async (user_id) => {
   isUserLogged();
@@ -26,23 +27,18 @@ export const insertCompanies = async (company) => {
 
   const { data, error } = await supabase
     .from("companies")
-    .insert({
-      name: name,
-      service_type: type,
-      address: address,
-      contact: contact,
-      geolocation: geolocation,
-      state: state,
-      city: city,
-      social_media: socialMedia,
-      user_id: user_id,
-    })
+    .insert({ company })
     .select("id");
 
   if (data !== []) {
+    openNotification("information", "business-added", "success");
     const { id } = data[0];
-    await insertSocialMedia(socialMedia, id);
-    return "business-added";
+    const request_to_save_social = await insertSocialMedia(socialMedia, id);
+    if (request_to_save_social !== null) {
+      openNotification("information", "business-added", "success");
+    } else {
+      openNotification("information", "business-added", "success");
+    }
   } else {
     return error;
   }
@@ -57,6 +53,7 @@ export const insertSocialMedia = async (medias, owner_uuid) => {
       social_media: social_media,
       owner_uuid: owner_uuid,
     });
+
   }
 };
 

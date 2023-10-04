@@ -48,7 +48,6 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
   };
 
   useEffect(() => {
-    console.log(position);
     handleCompanyInfo("geolocation", position);
   }, [position]);
 

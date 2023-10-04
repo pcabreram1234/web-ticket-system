@@ -71,5 +71,10 @@
   "My-config": "Mis configuraciones",
   "OwnerApp-Services-types": "Clase de comercio",
   "search-placeholder": "Buscar...",
-  "Edit-business": "Editar Comercio"
+  "Edit-business": "Editar Comercio",
+  "business-added": "Comercio agregado satisfactoriamente",
+  "social-media-added": "Redes sociales agregadas satisfactoriamente",
+  "information": "information",
+  "upload-file,error": "Ocurrio un error al tratar de subir el archivo",
+  "upload-file-success": "La imagen se ha subido satisfactoriamente"
 }

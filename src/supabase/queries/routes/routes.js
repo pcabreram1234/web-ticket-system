@@ -8,11 +8,10 @@ export const saveUserCurrentRoute = async (routeToSave, userId) => {
     last_route: routeToSave,
   });
 
-  if (data) {
-    return data;
-  } else {
-    console.log(error);
+  if (error) {
+    throw new Error(error);
   }
+  return data;
 };
 
 export const fetchLastRoute = async (userId) => {
@@ -24,11 +23,8 @@ export const fetchLastRoute = async (userId) => {
     .order("timestamp", { ascending: false })
     .limit(1);
 
-  console.log(userId);
-
   if (error) {
     throw new Error(error);
   }
-  console.log(data);
   return data;
 };

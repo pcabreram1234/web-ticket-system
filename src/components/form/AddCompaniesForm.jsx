@@ -45,28 +45,27 @@ const AddCompaniesForm = () => {
         setCities(Cities[key].cities);
         setProvinceSelected(province);
         setCitySelected(Cities[key].cities[0]);
-
-        // handleCompanyInfo("city", Cities[key].cities[0]);
-        // handleCompanyInfo("state", province);
       }
     }
   };
 
   const handleSubmit = () => {
     form.validateFields().then((resp) => {
-      console.log(company);
-      // insertCompanies(company).then((resp) => {
-      //   if ((resp = "business-added")) {
-      //   }
-      // });
+      insertCompanies(company).then((resp) => {
+        if ((resp = "business-added")) {
+        }
+      });
     });
   };
 
   useEffect(() => {
+    // Cargar los servicios de la lista correspondiente
+    // Luego setear los estados de ciudad y provincia con los primeros por defecto
     fetchAllServices().then((services) => {
       setServicesTypes(services);
+      handleCompanyInfo("city", citySelected[0]);
+      handleCompanyInfo("state", proviceSelected);
     });
-    console.log(company);
   }, []);
 
   return (

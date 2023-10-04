@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const CompanyContext = React.createContext();
 
@@ -32,11 +32,11 @@ const CompanyProvider = ({ children }) => {
     geolocation: "",
     state: "",
     city: "",
+    icon: {},
   });
 
   const handleCompanyInfo = (prop, value) => {
     setCompany((prevData) => ({ ...prevData, [prop]: value }));
-    console.log(company.geolocation);
   };
 
   const updateSocialMediaAccount = (accountType, userName, href) => {
@@ -87,6 +87,10 @@ const CompanyProvider = ({ children }) => {
         break;
     }
   };
+
+  useEffect(() => {
+    console.log(company);
+  }, [handleCompanyInfo]);
 
   return (
     <CompanyContext.Provider

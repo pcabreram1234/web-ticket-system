@@ -159,7 +159,6 @@ const NavBar = () => {
 
   const handleUserTypeMenu = () => {
     // debugger;
-    console.log(user);
     if (user !== null) {
       const user_type = user.user_metadata.user_type;
       switch (user_type) {
@@ -181,19 +180,12 @@ const NavBar = () => {
 
   // Al colocar como dependencia el state user, ya sea que exista o no un usuario ya logeado modificará el menu actual
   useEffect(() => {
-    console.log("Entre al loop");
-    console.log(user);
     handleUserTypeMenu();
-    if (user === null || user === undefined) {
-      redirect("/login");
-    }
   }, [user]);
 
   useEffect(() => {
     if (user !== null && user !== undefined) {
-      console.log(user);
       const { id } = user;
-      console.log(id);
       saveUserCurrentRoute(location.pathname, id);
     }
   }, [location.pathname]);

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Modal, Input, Form } from "antd";
 import { FacebookFilled, InstagramFilled } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
@@ -13,14 +13,15 @@ const SocialMediaForm = ({ cb, visible }) => {
   const whatsappHref = "https://api.whatsapp.com/send?phone=";
   const { t } = useTranslation();
   const [form] = Form.useForm();
-  const { updateSocialMediaAccount, company, handleCompanyInfo } =
-    useContext(CompanyContext);
-  const { user } = useContext(AuthContext);
-
+  const { updateSocialMediaAccount, company } = useContext(CompanyContext);
   const [showModal, setShowModal] = useState(visible);
+
+  const { socialMedia } = company;
+
   const saveChanges = () => {
     form.validateFields().then((resp) => {
       setShowModal(false);
+      cb(false);
       return true;
     });
   };
@@ -40,7 +41,10 @@ const SocialMediaForm = ({ cb, visible }) => {
       }}
     >
       <Form form={form}>
-        <Form.Item name={"facebook"}>
+        <Form.Item
+          name={"facebook"}
+          initialValue={socialMedia.facebook.user_name}
+        >
           <Input
             placeholder={t("social-media-username")}
             prefix={<FacebookFilled style={{ color: "blue " }} />}
@@ -54,7 +58,10 @@ const SocialMediaForm = ({ cb, visible }) => {
           />
         </Form.Item>
 
-        <Form.Item name={"instagram"}>
+        <Form.Item
+          name={"instagram"}
+          initialValue={socialMedia.instagram.user_name}
+        >
           <Input
             prefix={<InstagramFilled style={{ color: "chocolate" }} />}
             placeholder={t("social-media-username")}
@@ -78,6 +85,7 @@ const SocialMediaForm = ({ cb, visible }) => {
               pattern: /[(0-9){3}(0-9){3}(0-9){4}]/,
             },
           ]}
+          initialValue={socialMedia.whatsapp.user_name}
         >
           <PhoneInput
             countries={["DO", "US"]}

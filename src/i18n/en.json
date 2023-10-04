@@ -71,5 +71,10 @@
   "My-config": "Config",
   "OwnerApp-Services-types": "Business type",
   "search-placeholder": "type your search",
-  "Edit-business": "Edit Business"
+  "Edit-business": "Edit Business",
+  "business-added": "Business added successfully",
+  "social-media-added": "Social Media added successfully",
+  "information": "information",
+  "upload-file-error": "An error occur trying to upload the file",
+  "upload-file-success": "The image has been upload successfully"
 }

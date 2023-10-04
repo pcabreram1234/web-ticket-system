@@ -1,15 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { CompanyContext } from "../context/CompanyContext";
 
 export const useLocation = () => {
   const [coords, setCoords] = useState(null);
+  const { company } = useContext(CompanyContext);
+
+  const { geolocation } = company;
   useEffect(() => {
     const browser = navigator;
     browser.geolocation.getCurrentPosition(
       (resp) => {
-        console.log(resp);
         const { latitude, longitude } = resp.coords;
-        console.log(latitude);
-        setCoords({ latitude, longitude });
+        geolocation !== ""
+          ? setCoords(geolocation)
+          : setCoords([latitude, longitude]);
       },
       (err) => {
         console.log(err);
