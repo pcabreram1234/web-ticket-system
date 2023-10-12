@@ -2,8 +2,10 @@ import React, { useState, useContext } from "react";
 import { Upload, Modal, Button } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import { handleUploadFile } from "../../supabase/storage";
 import { CompanyContext } from "../../context/CompanyContext";
+import { AuthContext } from "../../context/UserContext";
+import { supabase } from "../../supabase";
+const URL_UPLOAD_IMAGE = import.meta.env["VITE_FETCH_UPLOAD_IMAGE"];
 
 const UploadButton = () => {
   const [fileList, setFileList] = useState([]);
@@ -11,21 +13,35 @@ const UploadButton = () => {
   const [titleModal, setTitleModal] = useState([]);
   const [previewImage, setPreviewImage] = useState([]);
   const context = useContext(CompanyContext);
-  const { handleCompanyInfo } = context;
+  const userContext = useContext(AuthContext);
+  const { handleCompanyInfo, company } = context;
+  const { user } = userContext;
   const { t } = useTranslation();
 
-  const onChange = (e) => {
+  async function onChange(e) {
     const file = new FileReader();
     file.readAsDataURL(e.file.originFileObj);
     file.onload = () => setPreviewImage(file.result);
     setFileList(e.fileList);
 
-    console.log(fileList);
-
-    if (fileList !== []) {
-      handleCompanyInfo("icon", fileList[0]);
+    if (fileList.length > 0) {
+      const userNameSplitted = user.email.split("@");
+      const imagePath = `/${user.id}/${userNameSplitted[0]}`;
+      handleCompanyInfo("icon", file);
+      const { data, error } = await supabase.storage
+        .from("web-ticket-storage")
+        .upload(imagePath, e.file.originFileObj, {
+          contentType: e.file.type.toString(),
+          upsert: true,
+          cacheControl: "3600",
+        });
+      if (error) {
+        console.log(error);
+      } else {
+        console.log(data);
+      }
     }
-  };
+  }
 
   const handlePreview = (file) => {
     setShowPreviewModal(true);
@@ -58,7 +74,7 @@ const UploadButton = () => {
         listType="picture-circle"
         maxCount={1}
         fileList={fileList}
-        action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+        // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
       >
         {fileList.length < 1 && (
           <Button>
