@@ -76,5 +76,7 @@
   "social-media-added": "Redes sociales agregadas satisfactoriamente",
   "information": "information",
   "upload-file,error": "Ocurrio un error al tratar de subir el archivo",
-  "upload-file-success": "La imagen se ha subido satisfactoriamente"
+  "upload-file-success": "La imagen se ha subido satisfactoriamente",
+  "upload-file-success-message": "El icono de tu negocio ha sido subido a la nube",
+  "company-exists": "Este negocio ya existe"
 }

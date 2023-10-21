@@ -1,49 +1,44 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Upload, Modal, Button } from "antd";
 import { PlusCircleFilled } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { CompanyContext } from "../../context/CompanyContext";
 import { AuthContext } from "../../context/UserContext";
-import { supabase } from "../../supabase";
-const URL_UPLOAD_IMAGE = import.meta.env["VITE_FETCH_UPLOAD_IMAGE"];
 
 const UploadButton = () => {
   const [fileList, setFileList] = useState([]);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [titleModal, setTitleModal] = useState([]);
   const [previewImage, setPreviewImage] = useState([]);
+  const [imagePath, setImagePath] = useState([]);
+  const [image, setImage] = useState([]);
+  const [type, setType] = useState([]);
   const context = useContext(CompanyContext);
   const userContext = useContext(AuthContext);
-  const { handleCompanyInfo, company } = context;
+  const { handleCompanyInfo, name } = context;
   const { user } = userContext;
   const { t } = useTranslation();
 
-  async function onChange(e) {
-    const file = new FileReader();
-    file.readAsDataURL(e.file.originFileObj);
-    file.onload = () => setPreviewImage(file.result);
+  function onChange(e) {
+    const fileToUpLoad = new FileReader();
+    fileToUpLoad.readAsDataURL(e.file.originFileObj);
+    fileToUpLoad.onload = () => setPreviewImage(fileToUpLoad.result);
     setFileList(e.fileList);
-
     if (fileList.length > 0) {
       const userNameSplitted = user.email.split("@");
-      const imagePath = `/${user.id}/${userNameSplitted[0]}`;
-      handleCompanyInfo("icon", file);
-      const { data, error } = await supabase.storage
-        .from("web-ticket-storage")
-        .upload(imagePath, e.file.originFileObj, {
-          contentType: e.file.type.toString(),
-          upsert: true,
-          cacheControl: "3600",
-        });
-      if (error) {
-        console.log(error);
-      } else {
-        console.log(data);
-      }
+      setImagePath(`/${user.id}/${userNameSplitted[0]}_${name}`);
+      setImage(e.file.originFileObj);
+      setType(e.file.type.toString());
+      handleCompanyInfo("icon", {
+        imagePath: imagePath,
+        image: image,
+        type: type,
+      });
+      handleCompanyInfo("hasIcon", true);
     }
   }
 
-  const handlePreview = (file) => {
+  const handlePreview = () => {
     setShowPreviewModal(true);
   };
 
@@ -56,12 +51,13 @@ const UploadButton = () => {
     setFileList([]);
   };
 
-  const ButtonToUpload = (
-    <Button>
-      {t("upload-bussiness-icon")}
-      <PlusCircleFilled />
-    </Button>
-  );
+  useEffect(() => {
+    console.log(fileList);
+  }, [setFileList]);
+
+  useEffect(() => {
+    console.log("Se ha cambiado el nombre del negocio a " + name);
+  }, [name]);
 
   return (
     <>
@@ -74,7 +70,6 @@ const UploadButton = () => {
         listType="picture-circle"
         maxCount={1}
         fileList={fileList}
-        // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
       >
         {fileList.length < 1 && (
           <Button>

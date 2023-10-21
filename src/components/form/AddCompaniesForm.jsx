@@ -34,7 +34,6 @@ const AddCompaniesForm = () => {
 
   const handleShowGeolocationModal = () => {
     setShowGeoLocationModal(true);
-    console.log(typeof company.geolocation);
   };
 
   const handleSelectCities = (province) => {
@@ -51,10 +50,18 @@ const AddCompaniesForm = () => {
 
   const handleSubmit = () => {
     form.validateFields().then((resp) => {
-      insertCompanies(company).then((resp) => {
-        if ((resp = "business-added")) {
-        }
-      });
+      // console.log(company);
+      insertCompanies(company)
+        .then((resp) => {
+          console.log(resp);
+          if (resp) {
+            console.log("Guardado");
+            form.resetFields();
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     });
   };
 
@@ -88,7 +95,7 @@ const AddCompaniesForm = () => {
         />
       </Form.Item>
 
-      <Form.Item name={"service_type"}>
+      <Form.Item name={"service_type"} rules={[{ required: true }]}>
         <Select
           allowClear
           placeholder={t("service_type_placeholder")}

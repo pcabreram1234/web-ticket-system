@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "./UserContext";
 
 const CompanyContext = React.createContext();
 
 const CompanyProvider = ({ children }) => {
+  const userContext = useContext(AuthContext);
+  const { user } = userContext;
+
   const [company, setCompany] = useState({
     user_id: "",
     name: "",
@@ -33,6 +37,8 @@ const CompanyProvider = ({ children }) => {
     state: "",
     city: "",
     icon: {},
+    hasSocialMedia: false,
+    hasIcon: false,
   });
 
   const handleCompanyInfo = (prop, value) => {
@@ -40,6 +46,7 @@ const CompanyProvider = ({ children }) => {
   };
 
   const updateSocialMediaAccount = (accountType, userName, href) => {
+    handleCompanyInfo("hasSocialMedia", true);
     switch (accountType) {
       case "facebook":
         setCompany((prevData) => ({
@@ -87,6 +94,12 @@ const CompanyProvider = ({ children }) => {
         break;
     }
   };
+
+  useEffect(() => {
+    if (user?.id) {
+      handleCompanyInfo("user_id", user.id);
+    }
+  }, []);
 
   useEffect(() => {
     console.log(company);
