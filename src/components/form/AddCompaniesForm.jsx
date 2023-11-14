@@ -24,7 +24,8 @@ const AddCompaniesForm = () => {
   const [proviceSelected, setProvinceSelected] = useState(provinces[0]);
   const [cities, setCities] = useState([CitiesOfCountry.Cities.Azua.cities]);
   const [citySelected, setCitySelected] = useState(cities[0]);
-  const { handleCompanyInfo, company } = useContext(CompanyContext);
+  const { handleCompanyInfo, company, resetCompanyContext } =
+    useContext(CompanyContext);
   const { t } = useTranslation();
   const [form] = Form.useForm();
 
@@ -53,10 +54,10 @@ const AddCompaniesForm = () => {
       // console.log(company);
       insertCompanies(company)
         .then((resp) => {
-          console.log(resp);
-          if (resp) {
+          if (resp === true) {
             console.log("Guardado");
-            form.resetFields();
+            form.resetFields()
+            resetCompanyContext();
           }
         })
         .catch((err) => {

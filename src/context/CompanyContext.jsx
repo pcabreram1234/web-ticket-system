@@ -41,6 +41,8 @@ const CompanyProvider = ({ children }) => {
     hasIcon: false,
   });
 
+  const originalCompanyContext = company;
+
   const handleCompanyInfo = (prop, value) => {
     setCompany((prevData) => ({ ...prevData, [prop]: value }));
   };
@@ -107,7 +109,11 @@ const CompanyProvider = ({ children }) => {
 
   return (
     <CompanyContext.Provider
-      value={{ company, handleCompanyInfo, updateSocialMediaAccount }}
+      value={{
+        company,
+        handleCompanyInfo,
+        updateSocialMediaAccount,
+      }}
       children={children}
     />
   );

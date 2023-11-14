@@ -82,7 +82,7 @@ export const fetchCompanyById = async (id) => {
 export const saveIconIntoStorage = async (file, filePath) => {
   const { data, error } = await supabase.storage
     .from("web-ticket-storage")
-    .upload(file, filePath, {
+    .upload(filePath, file, {
       upsert: true,
       cacheControl: "3600",
     });
@@ -106,7 +106,6 @@ const verifyExistingCompany = async (company, user_id) => {
     .eq("user_id", user_id)
     .limit(1);
 
-  console.log(data);
   if (data.length > 0) {
     return true;
   } else {
