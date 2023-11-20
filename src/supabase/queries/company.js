@@ -13,11 +13,19 @@ export const fetchAllCompaniesByUser = async (user_id) => {
 
 export const insertCompanies = async (company) => {
   isUserLogged();
-
-  const { hasSocialMedia, hasIcon, socialMedia, icon, ...companyToSave } =
-    company;
-
   let saveStatus = false;
+  console.log(company);
+
+  const {
+    hasSocialMedia,
+    hasIcon,
+    socialMedia,
+    fileList,
+    type,
+    image,
+    ...companyToSave
+  } = company;
+
   const verifyCurrentCompany = await verifyExistingCompany(
     companyToSave.name,
     companyToSave.user_id
@@ -44,8 +52,8 @@ export const insertCompanies = async (company) => {
       }
       if (company.hasIcon) {
         const request_to_save_icon = await saveIconIntoStorage(
-          icon.image,
-          icon.imagePath
+          image,
+          companyToSave.imagePath
         );
       }
       saveStatus = true;
@@ -80,6 +88,7 @@ export const fetchCompanyById = async (id) => {
 };
 
 export const saveIconIntoStorage = async (file, filePath) => {
+  // console.log(file, filePath);
   const { data, error } = await supabase.storage
     .from("web-ticket-storage")
     .upload(filePath, file, {

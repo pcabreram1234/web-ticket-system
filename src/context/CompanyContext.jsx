@@ -6,9 +6,10 @@ const CompanyContext = React.createContext();
 const CompanyProvider = ({ children }) => {
   const userContext = useContext(AuthContext);
   const { user } = userContext;
+  // const [isNameChanging, setIsNameChanging] = useState(false);
 
-  const [company, setCompany] = useState({
-    user_id: "",
+  const initialSate = {
+    user_id: user?.id,
     name: "",
     service_type: "",
     address: "",
@@ -36,12 +37,20 @@ const CompanyProvider = ({ children }) => {
     geolocation: "",
     state: "",
     city: "",
-    icon: {},
+    image: "",
+    type: "",
+    imagePath: "",
+    fileList: [],
     hasSocialMedia: false,
     hasIcon: false,
-  });
+  };
 
-  const originalCompanyContext = company;
+  const [company, setCompany] = useState(initialSate);
+  const [isBusnisessSaved, setIsBusinessSaved] = useState(false);
+
+  const resetCompanyContextValues = () => {
+    setCompany({ ...initialSate });
+  };
 
   const handleCompanyInfo = (prop, value) => {
     setCompany((prevData) => ({ ...prevData, [prop]: value }));
@@ -97,11 +106,13 @@ const CompanyProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    if (user?.id) {
-      handleCompanyInfo("user_id", user.id);
-    }
-  }, []);
+  const resetIconInfo = () => {
+    handleCompanyInfo("fileList", []);
+    handleCompanyInfo("imagePath", "");
+    handleCompanyInfo("image", "");
+    handleCompanyInfo("type", "");
+    handleCompanyInfo("hasIcon", false);
+  };
 
   useEffect(() => {
     console.log(company);
@@ -113,6 +124,10 @@ const CompanyProvider = ({ children }) => {
         company,
         handleCompanyInfo,
         updateSocialMediaAccount,
+        resetCompanyContextValues,
+        resetIconInfo,
+        isBusnisessSaved,
+        setIsBusinessSaved,
       }}
       children={children}
     />

@@ -60,6 +60,7 @@ const GeoLocationModal = ({ cb, visible, initialCoords }) => {
       style={{ textAlign: "center" }}
       onCancel={() => {
         cb(false);
+        handleCompanyInfo("geolocation", "");
       }}
       onOk={() => {
         console.log(`La posicion a guardar es ${position}`);

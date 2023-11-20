@@ -24,8 +24,12 @@ const AddCompaniesForm = () => {
   const [proviceSelected, setProvinceSelected] = useState(provinces[0]);
   const [cities, setCities] = useState([CitiesOfCountry.Cities.Azua.cities]);
   const [citySelected, setCitySelected] = useState(cities[0]);
-  const { handleCompanyInfo, company, resetCompanyContext } =
-    useContext(CompanyContext);
+  const {
+    handleCompanyInfo,
+    company,
+    resetCompanyContextValues,
+    setIsBusinessSaved,
+  } = useContext(CompanyContext);
   const { t } = useTranslation();
   const [form] = Form.useForm();
 
@@ -56,8 +60,9 @@ const AddCompaniesForm = () => {
         .then((resp) => {
           if (resp === true) {
             console.log("Guardado");
-            form.resetFields()
-            resetCompanyContext();
+            form.resetFields();
+            resetCompanyContextValues();
+            setIsBusinessSaved(true);
           }
         })
         .catch((err) => {
@@ -91,6 +96,10 @@ const AddCompaniesForm = () => {
           placeholder={t("AddCompaniesForm-Name-PlaceHolder")}
           onInput={(e) => {
             handleCompanyInfo("name", e.currentTarget.value);
+            handleCompanyInfo(
+              "imagePath",
+              `/${company.user_id}/${e.currentTarget.value}`
+            );
           }}
           autoFocus
         />
