@@ -78,5 +78,8 @@
   "upload-file-error": "An error occur trying to upload the file",
   "upload-file-success": "The image has been upload successfully",
   "upload-file-success-message": "Your Business icon has been upload successfully",
-  "company-exists": "This company already exists"
+  "company-exists": "This company already exists",
+  "initialWorkingHours": "Open",
+  "finalWorkingHours": "Close",
+  "company_working_days": "Working Days"
 }

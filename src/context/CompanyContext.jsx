@@ -43,6 +43,7 @@ const CompanyProvider = ({ children }) => {
     fileList: [],
     hasSocialMedia: false,
     hasIcon: false,
+    working_hours: [],
   };
 
   const [company, setCompany] = useState(initialSate);

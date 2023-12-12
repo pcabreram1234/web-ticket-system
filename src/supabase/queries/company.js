@@ -23,8 +23,15 @@ export const insertCompanies = async (company) => {
     fileList,
     type,
     image,
+    working_hours,
     ...companyToSave
   } = company;
+
+  const openings_hours = working_hours[0].format("HH:mm");
+  const closing_time = working_hours[1].format("HH:mm");
+
+  // console.log(new Date().getTime(openings_hours));
+  // console.log(closing_hours);
 
   const verifyCurrentCompany = await verifyExistingCompany(
     companyToSave.name,
@@ -37,7 +44,11 @@ export const insertCompanies = async (company) => {
   } else {
     const { data, error } = await supabase
       .from("companies")
-      .insert(companyToSave)
+      .insert({
+        ...companyToSave,
+        openings_hours: openings_hours,
+        closing_time: closing_time,
+      })
       .select("id");
     if (data) {
       openNotification("information", "business-added", "success");

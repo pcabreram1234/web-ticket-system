@@ -20,3 +20,15 @@ export async function handleUploadFile(file, filePath) {
   //   openNotification("upload-file-success", "", "success");
   // }
 }
+
+export async function generateSignedUrl(filePath) {
+  const { data, error } = await supabase.storage
+    .from(budget)
+    .createSignedUrl(filePath, 86400);
+  console.log(data);
+  if (error) {
+    throw error;
+  } else {
+    return data.signedUrl;
+  }
+}

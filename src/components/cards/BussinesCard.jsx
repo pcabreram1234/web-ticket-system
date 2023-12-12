@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Button, Typography, Image, Row } from "antd";
 import { useTranslation } from "react-i18next";
 import { EditFilled, DeleteFilled } from "@ant-design/icons";
 import EditBusinessModal from "../modals/EditBusinessModal";
 import { fetchCompanyById } from "../../supabase/queries/company";
+import { generateSignedUrl } from "../../supabase/storage";
+
 const BusinessCard = ({ company }) => {
   const [showEditModal, setShowEdtiModal] = useState(false);
   const [formData, setFormData] = useState();
+  const [businessIcon, setBusinessIcon] = useState();
   const { t } = useTranslation();
   const { Text } = Typography;
+
+  useEffect(() => {
+    generateSignedUrl(company.imagePath)
+      .then((resp) => {
+        setBusinessIcon(resp);
+      })
+      .then(() => {
+        console.log(businessIcon);
+      });
+  }, []);
+
   return (
     <>
       {showEditModal && (
@@ -21,7 +35,7 @@ const BusinessCard = ({ company }) => {
       )}
       <Card key={company.id} title={company.name} style={{ width: "300" }}>
         <div className="company_card_img_container">
-          <Image src={company.logo} width={30} />
+          <Image src={businessIcon} width={80} />
           <Text>
             {t("OwnerApp-Services-types")}: {t(company.service_type.toString())}
           </Text>

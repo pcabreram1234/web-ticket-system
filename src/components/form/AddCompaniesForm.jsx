@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Form, Select, Input, Button } from "antd";
+import { Form, Select, Input, Button, TimePicker, Tag } from "antd";
 import { useTranslation } from "react-i18next";
 import { fetchAllServices } from "../../supabase/queries/service";
 import {
@@ -15,6 +15,7 @@ import CitiesOfCountry from "../../json/cities.json";
 import { insertCompanies } from "../../supabase/queries/company";
 import { useProvinces } from "../../hooks/useProvinces";
 import { CompanyContext } from "../../context/CompanyContext";
+import { fetchDays } from "../../supabase/queries/days/days";
 
 const AddCompaniesForm = () => {
   const [servicesTypes, setServicesTypes] = useState([]);
@@ -30,6 +31,7 @@ const AddCompaniesForm = () => {
     resetCompanyContextValues,
     setIsBusinessSaved,
   } = useContext(CompanyContext);
+  const [weekDays, setWeekDays] = useState([]);
   const { t } = useTranslation();
   const [form] = Form.useForm();
 
@@ -80,6 +82,12 @@ const AddCompaniesForm = () => {
       handleCompanyInfo("state", proviceSelected);
     });
   }, []);
+
+  useEffect(() => {
+    fetchDays().then((rows) => {
+      setWeekDays(rows);
+    });
+  }, [provinces]);
 
   return (
     <Form form={form} style={{ width: "80%", margin: "auto" }} size="large">
@@ -133,6 +141,41 @@ const AddCompaniesForm = () => {
           }}
           placeholder={t("AddCompaniesForm-Address-PlaceHolder")}
         />
+      </Form.Item>
+
+      <Form.Item
+        name={"schedule"}
+        rules={[{ required: true }]}
+        label={t("schedule")}
+      >
+        <TimePicker.RangePicker
+          use12Hours
+          minuteStep={30}
+          style={{ width: "100%" }}
+          format={"HH:mm"}
+          onChange={(e) => {
+            console.log(e);
+            handleCompanyInfo("working_hours", e);
+          }}
+        />
+      </Form.Item>
+
+      <Form.Item
+        name={t("company_working_days")}
+        label={t("company_working_days")}
+        rulesules={[{ required: true }]}
+      >
+        <Select mode="tags" allowClear>
+          {weekDays.length > 0 &&
+            weekDays.map((day) => {
+              return (
+                <Select.Option
+                  key={day.id}
+                  children={<Tag color="geekblue-inverse">{day.day}</Tag>}
+                />
+              );
+            })}
+        </Select>
       </Form.Item>
 
       <Form.Item
@@ -190,6 +233,7 @@ const AddCompaniesForm = () => {
           />
         )}
       </Form.Item>
+
       <Form.Item>
         <Button style={{ width: "100%" }} onClick={handleShowGeolocationModal}>
           {t("AddCompaniesForm-Geolocation-button")} <ZoomInOutlined />
